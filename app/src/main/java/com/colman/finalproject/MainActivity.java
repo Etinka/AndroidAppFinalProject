@@ -1,4 +1,4 @@
-package com.example.androidappfinalproject;
+package com.colman.finalproject;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
