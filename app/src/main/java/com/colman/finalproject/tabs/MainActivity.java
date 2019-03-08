@@ -1,13 +1,18 @@
-package com.colman.finalproject;
+package com.colman.finalproject.tabs;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.colman.finalproject.R;
+import com.colman.finalproject.bases.GagBaseActivity;
+
+public class MainActivity extends GagBaseActivity {
+    private final String TAG = "MainActivity";
 
     private TextView mTextMessage;
 
@@ -31,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public static void launch(Context context){
+        context.startActivity(new Intent(context, MainActivity.class));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,5 +49,4 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
-
 }
