@@ -12,8 +12,6 @@ import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseActivity;
 
 public class MainActivity extends GagBaseActivity {
-    private final String TAG = "MainActivity";
-
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

@@ -12,10 +12,13 @@ public class SplashActivity extends GagBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        logger.logDebug("Is user logged in: " + mModel.isUserLoggedIn());
         if (mModel.isUserLoggedIn()) {
             MainActivity.launch(this);
+            finish();
         } else {
             LoginActivity.launch(this);
+            finish();
         }
     }
 }

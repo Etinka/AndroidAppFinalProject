@@ -3,10 +3,10 @@ package com.colman.finalproject.model.firebase;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
-import android.util.Log;
 
 import com.colman.finalproject.models.Property;
 import com.colman.finalproject.utils.DateTimeUtils;
+import com.colman.finalproject.utils.Logger;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseManager implements IFirebaseManager {
-    private final String TAG = "FirebaseManager";
+    private Logger logger = new Logger(this.getClass().getSimpleName());
+
     private static FirebaseManager _instance;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore mDb = FirebaseFirestore.getInstance();
@@ -50,10 +51,10 @@ public class FirebaseManager implements IFirebaseManager {
     public void registerUser(String email, String password, String userName) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((authResult) -> {
             if (authResult.isSuccessful()) {
-                Log.d(TAG, "registerUser:success");
+                logger.logDebug("registerUser:success");
                 //TODO add registering user name to userInfos
             } else {
-                Log.d(TAG, "registerUser:failure");
+                logger.logDebug("registerUser:failure");
             }
             mSignedInLiveData.postValue(authResult.isSuccessful());
         });
@@ -64,12 +65,12 @@ public class FirebaseManager implements IFirebaseManager {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((authResult) -> {
             if (authResult.isSuccessful()) {
                 // Sign in success, update UI with the signed-in user's information
-                Log.d(TAG, "signInWithEmail:success");
+                logger.logDebug("signInWithEmail:success");
                 FirebaseUser user = mAuth.getCurrentUser();
                 //TODO add getting user info
             } else {
                 // If sign in fails, display a message to the user.
-                Log.w(TAG, "signInWithEmail:failure", authResult.getException());
+                logger.logWarning("signInWithEmail:failure", authResult.getException());
             }
             mSignedInLiveData.postValue(authResult.isSuccessful());
         });
@@ -99,7 +100,7 @@ public class FirebaseManager implements IFirebaseManager {
     public void getAllProperties(Timestamp from) {
         mPropertiesCollectionRef.whereGreaterThan("lastUpdate", from).addSnapshotListener((snapshot, e) -> {
             if (e != null) {
-                Log.w(TAG, "Listen failed.", e);
+                logger.logWarning("Listen failed.", e);
                 return;
             }
             List<Property> properties = new ArrayList<>();
@@ -107,7 +108,7 @@ public class FirebaseManager implements IFirebaseManager {
                 properties = snapshot.toObjects(Property.class);
             }
             mPropertiesLiveData.postValue(properties);
-            Log.d(TAG, "Current properties number: " + properties.size());
+            logger.logDebug("Current properties number: " + properties.size());
         });
     }
 

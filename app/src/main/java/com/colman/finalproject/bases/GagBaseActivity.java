@@ -4,11 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.inputmethod.InputMethodManager;
 
 import com.colman.finalproject.model.Model;
+import com.colman.finalproject.utils.Logger;
 
 import java.util.Objects;
 
 public abstract class GagBaseActivity extends AppCompatActivity {
-
+    protected Logger logger = new Logger(this.getClass().getSimpleName());
     protected Model mModel = Model.getInstance();
 
     protected void hideSoftKeyBoard() {
