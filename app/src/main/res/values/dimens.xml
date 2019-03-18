@@ -10,5 +10,7 @@
     <dimen name="appbar_padding_top">5dp</dimen>
     <dimen name="app_medium_size_margin">16dp</dimen>
     <dimen name="app_small_size_margin">8dp</dimen>
+    <dimen name="login_logo_width">130dp</dimen>
+    <dimen name="login_logo_height">120dp</dimen>
 
 </resources>
