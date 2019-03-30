@@ -9,6 +9,8 @@ import android.support.constraint.ConstraintSet;
 import android.support.design.widget.Snackbar;
 import android.support.transition.AutoTransition;
 import android.support.transition.TransitionManager;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.colman.finalproject.R;
@@ -53,6 +55,8 @@ public class LoginActivity extends GagBaseActivity {
 
         findViewById(R.id.loginBtn).setOnClickListener(v -> {
             hideSoftKeyBoard();
+            findViewById(R.id.login_loader).setVisibility(View.VISIBLE);
+            ((Button) v).setText("");
             mModel.signInUser(mEmailTV.getText().toString(), mPasswordTV.getText().toString());
         });
 

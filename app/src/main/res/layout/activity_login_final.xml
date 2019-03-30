@@ -71,6 +71,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
+    <ProgressBar
+        android:id="@+id/login_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/loginBtn"
+        app:layout_constraintBottom_toBottomOf="@id/loginBtn"
+        app:layout_constraintStart_toStartOf="@id/loginBtn"
+        app:layout_constraintEnd_toEndOf="@id/loginBtn"
+        android:visibility="gone"
+        android:indeterminateTint="@android:color/white"/>
+
     <ImageView
         android:id="@+id/logoImage"
         android:layout_width="46dp"
