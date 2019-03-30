@@ -16,6 +16,7 @@
         android:layout_marginEnd="8dp"
         android:imeOptions="actionNext"
         android:inputType="textEmailAddress"
+        android:textAlignment="viewStart"
         app:layout_constraintBottom_toTopOf="@+id/passwordTV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:textAlignment="viewStart"
         android:hint="@string/hint_password"
         android:imeOptions="actionNext"
         android:inputType="textPassword"
@@ -39,17 +41,22 @@
 
     <Button
         android:id="@+id/loginBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="1000dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="15dp"
         android:text="@string/sign_in"
+        android:textSize="20sp"
+        android:layout_marginBottom="1000dp"
+        android:background="@drawable/elipsis_button"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/logoImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordTV"
         app:layout_constraintVertical_chainStyle="packed" />
+
 
     <Button
         android:id="@+id/registerBtn"
@@ -84,6 +91,9 @@
         android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:text="@string/sign_in_title"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp"
+        android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
