@@ -12,5 +12,7 @@
     <dimen name="app_small_size_margin">8dp</dimen>
     <dimen name="login_logo_width">130dp</dimen>
     <dimen name="login_logo_height">120dp</dimen>
+    <dimen name="list_text_size">18sp</dimen>
+    <dimen name="price_text_size">24sp</dimen>
 
 </resources>

@@ -11,4 +11,9 @@
     <string name="email_hint">אימייל</string>
     <string name="go_to_registration">לא רשום? לחץ להרשמה</string>
     <string name="sign_in_title">התחבר</string>
+
+    <string name="floor">קומה %1$s</string>
+    <string name="num_rooms">%1$s חדרים</string>
+    <string name="price">%1$s &#8362;</string>
+
 </resources>
