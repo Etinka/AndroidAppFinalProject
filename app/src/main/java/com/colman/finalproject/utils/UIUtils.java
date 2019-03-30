@@ -9,12 +9,14 @@ import android.widget.TextView;
 
 public class UIUtils {
 
-    public static void showSnackbar(Context context, @NonNull View view, @NonNull CharSequence text, int duration) {
+    public static Snackbar showSnackbar(Context context, @NonNull View view, @NonNull CharSequence text, int duration) {
         Snackbar snackbar = Snackbar.make(view, text, duration);
         View snackbarView = snackbar.getView();
         int snackbarTextId = android.support.design.R.id.snackbar_text;
         TextView textView = snackbarView.findViewById(snackbarTextId);
         textView.setTextColor(ContextCompat.getColor(context, android.R.color.white));
         snackbar.show();
+
+        return snackbar;
     }
 }

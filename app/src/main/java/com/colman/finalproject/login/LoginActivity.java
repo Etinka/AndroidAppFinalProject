@@ -15,8 +15,10 @@ import android.widget.EditText;
 
 import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseActivity;
+import com.colman.finalproject.register.RegisterActivity;
 import com.colman.finalproject.tabs.MainActivity;
 import com.colman.finalproject.utils.UIUtils;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 //TODO add error handling and edit text verification + loading and disabling buttons
 //and move logic to view model
@@ -61,7 +63,10 @@ public class LoginActivity extends GagBaseActivity {
         });
 
         findViewById(R.id.registerBtn).setOnClickListener(v -> {
-            //TODO add launch register activity
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+
+
         });
 
         mModel.observeSignedInLiveData(this, isSignedIn -> {
