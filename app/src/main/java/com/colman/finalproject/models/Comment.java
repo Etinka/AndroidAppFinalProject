@@ -19,9 +19,23 @@ public class Comment {
     private Timestamp date = Timestamp.now();
     @NonNull
     private String userName = "";
+
     private boolean isActive = false;
 
+    private int propertyId = 0;
+
     public Comment() {
+    }
+
+    public Comment(@NonNull String id, @NonNull String text, @Nullable String imageUrl, @NonNull String userUid, @NonNull Timestamp date, @NonNull String userName, boolean isActive, int propertyId) {
+        this.id = id;
+        this.text = text;
+        this.imageUrl = imageUrl;
+        this.userUid = userUid;
+        this.date = date;
+        this.userName = userName;
+        this.isActive = isActive;
+        this.propertyId = propertyId;
     }
 
     @NonNull
@@ -78,12 +92,20 @@ public class Comment {
         this.userName = userName;
     }
 
-    public boolean isActive() {
+    boolean isActive() {
         return isActive;
     }
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public int getPropertyId() {
+        return propertyId;
+    }
+
+    public void setPropertyId(int propertyId) {
+        this.propertyId = propertyId;
     }
 
     @Override
@@ -96,6 +118,7 @@ public class Comment {
                 ", date=" + date +
                 ", userName='" + userName + '\'' +
                 ", isActive=" + isActive +
+                ", propertyId=" + propertyId +
                 '}';
     }
 }
