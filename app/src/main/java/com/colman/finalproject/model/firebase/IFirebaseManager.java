@@ -3,6 +3,7 @@ package com.colman.finalproject.model.firebase;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
 
+import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
 import com.google.firebase.Timestamp;
 
@@ -28,6 +29,12 @@ public interface IFirebaseManager {
     void getAllProperties(Timestamp from);
 
     void observePropertiesLiveData(LifecycleOwner lifecycleOwner, Observer<List<Property>> observer);
+
+    void observeCommentsLiveData(LifecycleOwner lifecycleOwner, Observer<List<Comment>> observer);
+
+    void getCommentsForProperty(int propertyId);
+
+    void addComment(Comment comment);
 
 }
 

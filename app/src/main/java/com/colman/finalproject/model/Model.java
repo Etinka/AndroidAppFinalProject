@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 
 import com.colman.finalproject.model.firebase.FirebaseManager;
 import com.colman.finalproject.model.firebase.IFirebaseManager;
+import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
 import com.google.firebase.Timestamp;
 
@@ -59,4 +60,17 @@ public class Model {
     public void observePropertiesLiveData(LifecycleOwner lifecycleOwner, Observer<List<Property>> observer) {
         mFirebaseManager.observePropertiesLiveData(lifecycleOwner, observer);
     }
+
+    public void observeCommentsLiveData(LifecycleOwner lifecycleOwner, Observer<List<Comment>> observer) {
+        mFirebaseManager.observeCommentsLiveData(lifecycleOwner, observer);
+    }
+
+    public void addComment(Comment comment) {
+        mFirebaseManager.addComment(comment);
+    }
+
+    public void getCommentsForProperty(int propertyId) {
+        mFirebaseManager.getCommentsForProperty(propertyId);
+    }
+
 }

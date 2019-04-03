@@ -4,6 +4,7 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 
+import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
 import com.colman.finalproject.utils.DateTimeUtils;
 import com.colman.finalproject.utils.Logger;
@@ -23,8 +24,10 @@ public class FirebaseManager implements IFirebaseManager {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore mDb = FirebaseFirestore.getInstance();
     private CollectionReference mPropertiesCollectionRef = mDb.collection("properties");
+    private CollectionReference mCommentsCollectionRef = mDb.collection("comments");
     private CollectionReference mUsersCollectionRef = mDb.collection("users");
     private MutableLiveData<List<Property>> mPropertiesLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Comment>> mCommentsLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mSignedInLiveData = new MutableLiveData<>();
 
     private FirebaseManager() {
@@ -89,6 +92,31 @@ public class FirebaseManager implements IFirebaseManager {
     //Properties
     public void observePropertiesLiveData(LifecycleOwner lifecycleOwner, Observer<List<Property>> observer) {
         mPropertiesLiveData.observe(lifecycleOwner, observer);
+    }
+
+    @Override
+    public void observeCommentsLiveData(LifecycleOwner lifecycleOwner, Observer<List<Comment>> observer) {
+        mCommentsLiveData.observe(lifecycleOwner, observer);
+    }
+
+    @Override
+    public void getCommentsForProperty(int propertyId) {
+        mCommentsCollectionRef.whereEqualTo("propertyId", propertyId).addSnapshotListener((snapshot, e) -> {
+            if (e != null) {
+                logger.logWarning("getCommentsForProperty failed.", e);
+                return;
+            }
+            List<Comment> comments = new ArrayList<>();
+            if (snapshot != null && !snapshot.isEmpty()) {
+                comments = snapshot.toObjects(Comment.class);
+            }
+            mCommentsLiveData.postValue(comments);
+        });
+    }
+
+    @Override
+    public void addComment(Comment comment) {
+        mCommentsCollectionRef.add(comment);
     }
 
     @Override
