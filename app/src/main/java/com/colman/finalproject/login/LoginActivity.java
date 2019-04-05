@@ -18,6 +18,7 @@ import com.colman.finalproject.bases.GagBaseActivity;
 import com.colman.finalproject.register.RegisterActivity;
 import com.colman.finalproject.tabs.MainActivity;
 import com.colman.finalproject.utils.UIUtils;
+import com.colman.finalproject.view.LoaderButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 //TODO add error handling and edit text verification + loading and disabling buttons
@@ -27,6 +28,7 @@ public class LoginActivity extends GagBaseActivity {
     private ConstraintSet constraintSet2 = new ConstraintSet(); // create a Constraint Set
     private EditText mEmailTV, mPasswordTV;
     private ConstraintLayout mConstraintLayout;
+    private LoaderButton mLoginBtn;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, LoginActivity.class));
@@ -54,10 +56,12 @@ public class LoginActivity extends GagBaseActivity {
         mConstraintLayout = findViewById(R.id.constraintLayout);
         mEmailTV = findViewById(R.id.emailTV);
         mPasswordTV = findViewById(R.id.passwordTV);
+        mLoginBtn = findViewById(R.id.loginBtn);
 
-        findViewById(R.id.loginBtn).setOnClickListener(v -> {
+        mLoginBtn.setOnClickListener(v -> {
             hideSoftKeyBoard();
-            findViewById(R.id.login_loader).setVisibility(View.VISIBLE);
+
+            mLoginBtn.handleLoadingStatus(true);
             ((Button) v).setText("");
             mModel.signInUser(mEmailTV.getText().toString(), mPasswordTV.getText().toString());
         });
@@ -65,8 +69,6 @@ public class LoginActivity extends GagBaseActivity {
         findViewById(R.id.registerBtn).setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
-
-
         });
 
         mModel.observeSignedInLiveData(this, isSignedIn -> {

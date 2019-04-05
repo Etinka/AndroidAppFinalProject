@@ -39,34 +39,16 @@
         app:layout_constraintTop_toBottomOf="@+id/emailTV"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <Button
+    <com.colman.finalproject.view.LoaderButton
         android:id="@+id/loginBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/sign_in"
-        android:textSize="20sp"
-        android:layout_marginBottom="1000dp"
-        android:background="@drawable/elipsis_button"
-        android:textColor="@android:color/white"
+        app:ctext="כניסה"
         app:layout_constraintBottom_toTopOf="@+id/logoImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordTV"
         app:layout_constraintVertical_chainStyle="packed" />
-
-    <ProgressBar
-        android:id="@+id/login_loader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/loginBtn"
-        app:layout_constraintBottom_toBottomOf="@id/loginBtn"
-        app:layout_constraintStart_toStartOf="@id/loginBtn"
-        app:layout_constraintEnd_toEndOf="@id/loginBtn"
-        android:visibility="gone"
-        android:indeterminateTint="@android:color/white"/>
 
     <Button
         android:id="@+id/registerBtn"

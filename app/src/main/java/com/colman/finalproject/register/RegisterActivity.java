@@ -16,6 +16,7 @@ import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseActivity;
 import com.colman.finalproject.tabs.MainActivity;
 import com.colman.finalproject.utils.UIUtils;
+import com.colman.finalproject.view.LoaderButton;
 
 import java.util.regex.Pattern;
 
@@ -28,7 +29,7 @@ public class RegisterActivity extends GagBaseActivity {
 
     private View mEmailErrorMsg;
     private View mPasswordErrorMsg;
-    private View mRegisterBtn;
+    private LoaderButton mRegisterBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +65,9 @@ public class RegisterActivity extends GagBaseActivity {
                 mPasswordErrorMsg.setVisibility(View.VISIBLE);
             }
             if(isValidEmail() && isValidPassword()) {
+                mRegisterBtn.handleLoadingStatus(true);
                 mModel.observeSignedInLiveData(this, isSuccessful -> {
+                    mRegisterBtn.handleLoadingStatus(false);
                     if (isSuccessful != null && isSuccessful) {
                         Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
