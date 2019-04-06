@@ -15,5 +15,12 @@
     <string name="floor">קומה %1$s</string>
     <string name="num_rooms">%1$s חדרים</string>
     <string name="price">%1$s &#8362;</string>
+    <string name="balcony">%1$s מרפסות</string>
+    <string name="elevator">מעלית: %1$s</string>
+    <string name="safe_room">ממ"\ד: %1$s</string>
+    <string name="size">%1$s מ\"ר</string>
+
+    <string name="available">יש</string>
+    <string name="unavailable">אין</string>
 
 </resources>

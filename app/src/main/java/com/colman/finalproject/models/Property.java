@@ -1,5 +1,7 @@
 package com.colman.finalproject.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"unused", "NullableProblems"})
-public class Property {
+public class Property implements Parcelable {
 
     private int id = 0;
     private boolean elevator;
@@ -36,6 +38,22 @@ public class Property {
     private Timestamp lastUpdate;
 
     public Property() {
+    }
+
+    public Property(Parcel in){
+        this.id = in.readInt();
+        this.elevator = in.readByte() != 0;
+        this.safeRoom = in.readByte() !=0;
+        this.address = in.readString();
+        this.price = in.readString();
+        this.numberOfRooms = in.readString();
+        this.imageUrl = in.readString();
+        this.floor = in.readString();
+        this.size = in.readString();
+        this.houseType = in.readString();
+        this.balcony = in.readString();
+        this.comments = in.readArrayList(Comment.class.getClassLoader());
+        this.lastUpdate = in.readParcelable(Timestamp.class.getClassLoader());
     }
 
     public int getId() {
@@ -179,5 +197,37 @@ public class Property {
                 ", comments=" + comments +
                 ", lastUpdate=" + lastUpdate +
                 '}';
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Property createFromParcel(Parcel in) {
+            return new Property(in);
+        }
+
+        public Property[] newArray(int size) {
+            return new Property[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeByte((byte)(elevator ? 1 : 0));
+        parcel.writeByte((byte)(safeRoom ? 1 : 0));
+        parcel.writeString(address);
+        parcel.writeString(price);
+        parcel.writeString(numberOfRooms);
+        parcel.writeString(imageUrl);
+        parcel.writeString(floor);
+        parcel.writeString(size);
+        parcel.writeString(houseType);
+        parcel.writeString(balcony);
+        parcel.writeList(comments);
+        parcel.writeParcelable(lastUpdate, i);
     }
 }

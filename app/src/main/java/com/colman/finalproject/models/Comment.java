@@ -1,12 +1,14 @@
 package com.colman.finalproject.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.firebase.Timestamp;
 
 @SuppressWarnings({"unused", "NullableProblems"})
-public class Comment {
+public class Comment implements Parcelable {
     @NonNull
     private String id = "";
     @NonNull
@@ -25,6 +27,17 @@ public class Comment {
     private int propertyId = 0;
 
     public Comment() {
+    }
+
+    public Comment(Parcel in) {
+        this.id = in.readString();
+        this.text = in.readString();
+        this.imageUrl = in.readString();
+        this.userUid = in.readString();
+        this.date = in.readParcelable(Timestamp.class.getClassLoader());
+        this.userName = in.readString();
+        this.isActive = in.readByte() !=0;
+        this.propertyId = in.readInt();
     }
 
     public Comment(@NonNull String id, @NonNull String text, @Nullable String imageUrl, @NonNull String userUid, @NonNull Timestamp date, @NonNull String userName, boolean isActive, int propertyId) {
@@ -120,5 +133,25 @@ public class Comment {
                 ", isActive=" + isActive +
                 ", propertyId=" + propertyId +
                 '}';
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Comment createFromParcel(Parcel in) {
+            return new Comment(in);
+        }
+
+        public Comment[] newArray(int size) {
+            return new Comment[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
     }
 }
