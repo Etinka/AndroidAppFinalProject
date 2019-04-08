@@ -10,7 +10,7 @@
 
     <android.support.design.widget.TextInputEditText
         android:id="@+id/emailTV"
-        android:layout_width="363dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -27,8 +27,8 @@
 
     <android.support.design.widget.TextInputEditText
         android:id="@+id/passwordTV"
-        android:layout_width="363dp"
-        android:layout_height="46dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/hint_password"

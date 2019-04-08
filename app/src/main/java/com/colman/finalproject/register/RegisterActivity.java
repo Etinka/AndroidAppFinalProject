@@ -1,6 +1,5 @@
 package com.colman.finalproject.register;
 
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseActivity;
 import com.colman.finalproject.tabs.MainActivity;
-import com.colman.finalproject.utils.UIUtils;
 import com.colman.finalproject.view.LoaderButton;
 
 import java.util.regex.Pattern;
@@ -45,17 +43,11 @@ public class RegisterActivity extends GagBaseActivity {
         mPasswordErrorMsg = findViewById(R.id.password_error_msg);
         mRegisterBtn = findViewById(R.id.register_btn);
 
-        mEmail.setOnFocusChangeListener((view, isFocused) -> {
-            updateEmailErrorMsg(view, isFocused);
-        });
+        mEmail.setOnFocusChangeListener(this::updateEmailErrorMsg);
 
-        mPasswordValidator.setOnFocusChangeListener((view, isFocused) -> {
-            updatePasswordErrorMsg(view, isFocused);
-        });
+        mPasswordValidator.setOnFocusChangeListener(this::updatePasswordErrorMsg);
 
-        mPassword.setOnFocusChangeListener((view, isFocused) -> {
-            updatePasswordErrorMsg(view, isFocused);
-        });
+        mPassword.setOnFocusChangeListener(this::updatePasswordErrorMsg);
 
         mRegisterBtn.setOnClickListener(view -> {
             if(!isValidEmail()) {

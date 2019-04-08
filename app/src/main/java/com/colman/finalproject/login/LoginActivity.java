@@ -9,8 +9,6 @@ import android.support.constraint.ConstraintSet;
 import android.support.design.widget.Snackbar;
 import android.support.transition.AutoTransition;
 import android.support.transition.TransitionManager;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.colman.finalproject.R;
@@ -19,7 +17,6 @@ import com.colman.finalproject.register.RegisterActivity;
 import com.colman.finalproject.tabs.MainActivity;
 import com.colman.finalproject.utils.UIUtils;
 import com.colman.finalproject.view.LoaderButton;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 //TODO add error handling and edit text verification + loading and disabling buttons
 //and move logic to view model
@@ -62,7 +59,6 @@ public class LoginActivity extends GagBaseActivity {
             hideSoftKeyBoard();
 
             mLoginBtn.handleLoadingStatus(true);
-            ((Button) v).setText("");
             mModel.signInUser(mEmailTV.getText().toString(), mPasswordTV.getText().toString());
         });
 
@@ -76,6 +72,7 @@ public class LoginActivity extends GagBaseActivity {
                 if (isSignedIn) {
                     MainActivity.launch(this);
                 } else {
+                    mLoginBtn.handleLoadingStatus(false);
                     UIUtils.showSnackbar(this, mConstraintLayout, "שם משתמש או סיסמה שגויים", Snackbar.LENGTH_LONG);
                 }
             }
