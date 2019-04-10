@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -16,35 +17,53 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textAlignment="center"/>
 
-    <android.support.design.widget.TextInputEditText
-        android:id="@+id/user_name"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_user_name"
+        android:layout_width="371dp"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="15dp"
-        android:hint="שם משתמש"
-        android:textAlignment="viewStart"
-        android:gravity="start"
         app:layout_constraintTop_toBottomOf="@id/register_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
-
-    <android.support.design.widget.TextInputEditText
-        android:id="@+id/email"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="15dp"
-        android:hint="דואר אלקטרוני"
-        android:textAlignment="viewStart"
-        android:inputType="textEmailAddress"
-        android:gravity="start"
-        app:layout_constraintTop_toBottomOf="@id/user_name"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="145dp">
+
+        <EditText
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:hint="שם משתמש"
+            android:imeOptions="actionNext"
+            android:textAlignment="viewStart" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/input_layout_user_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:textAlignment="viewStart"
+            android:gravity="start"
+            android:hint="דואר אלקטרוני" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:id="@+id/email_error_msg"
@@ -53,41 +72,57 @@
         android:text="Invalid email address"
         android:visibility="invisible"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/email"
-        app:layout_constraintStart_toStartOf="@id/email"
+        app:layout_constraintTop_toBottomOf="@id/input_layout_email"
+        app:layout_constraintStart_toStartOf="@id/input_layout_email"
         android:textColor="@android:color/holo_red_dark" />
 
-    <android.support.design.widget.TextInputEditText
-        android:id="@+id/password"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_password"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/input_layout_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="15dp"
-        android:hint="סיסמה"
-        android:inputType="textPassword"
-        android:textAlignment="viewStart"
-        android:gravity="start"
-        app:layout_constraintTop_toBottomOf="@id/email"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintVertical_chainStyle="packed">
 
-    <android.support.design.widget.TextInputEditText
-        android:id="@+id/passwordValidator"
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:textAlignment="viewStart"
+            android:gravity="start"
+            android:inputType="textPassword"
+            android:hint="סיסמה" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_password_validator"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/input_layout_password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="15dp"
-        android:hint="הכנס סיסמה שנית"
-        android:inputType="textPassword"
-        android:textAlignment="viewStart"
-        android:gravity="start"
-        app:layout_constraintTop_toBottomOf="@id/password"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <EditText
+            android:id="@+id/passwordValidator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:textAlignment="viewStart"
+            android:gravity="start"
+            android:inputType="textPassword"
+            android:hint="הכנס סיסמה שנית" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:id="@+id/password_error_msg"
@@ -96,8 +131,8 @@
         android:text="Passwords does not match"
         android:textSize="14sp"
         android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@id/passwordValidator"
-        app:layout_constraintStart_toStartOf="@id/passwordValidator"
+        app:layout_constraintTop_toBottomOf="@id/input_layout_password_validator"
+        app:layout_constraintStart_toStartOf="@id/input_layout_password_validator"
         android:textColor="@android:color/holo_red_dark" />
 
     <com.colman.finalproject.view.LoaderButton
