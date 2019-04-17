@@ -2,13 +2,14 @@ package com.colman.finalproject.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 @SuppressWarnings({"unused", "NullableProblems"})
 public class Property implements Parcelable {

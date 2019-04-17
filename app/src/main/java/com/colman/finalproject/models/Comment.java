@@ -2,10 +2,13 @@ package com.colman.finalproject.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.firebase.Timestamp;
+
+import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 @SuppressWarnings({"unused", "NullableProblems"})
 public class Comment implements Parcelable {
@@ -30,12 +33,12 @@ public class Comment implements Parcelable {
     }
 
     public Comment(Parcel in) {
-        this.id = in.readString();
-        this.text = in.readString();
+        this.id = Objects.requireNonNull(in.readString());
+        this.text = Objects.requireNonNull(in.readString());
         this.imageUrl = in.readString();
-        this.userUid = in.readString();
-        this.date = in.readParcelable(Timestamp.class.getClassLoader());
-        this.userName = in.readString();
+        this.userUid = Objects.requireNonNull(in.readString());
+        this.date = Objects.requireNonNull(in.readParcelable(Timestamp.class.getClassLoader()));
+        this.userName = Objects.requireNonNull(in.readString());
         this.isActive = in.readByte() !=0;
         this.propertyId = in.readInt();
     }

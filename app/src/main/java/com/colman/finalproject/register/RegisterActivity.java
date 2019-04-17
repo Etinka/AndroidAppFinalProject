@@ -1,22 +1,22 @@
 package com.colman.finalproject.register;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseActivity;
 import com.colman.finalproject.tabs.MainActivity;
+import com.colman.finalproject.utils.UIUtils;
 import com.colman.finalproject.view.LoaderButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.regex.Pattern;
+
+import androidx.annotation.Nullable;
 
 public class RegisterActivity extends GagBaseActivity {
 
@@ -50,13 +50,13 @@ public class RegisterActivity extends GagBaseActivity {
         mPassword.setOnFocusChangeListener(this::updatePasswordErrorMsg);
 
         mRegisterBtn.setOnClickListener(view -> {
-            if(!isValidEmail()) {
+            if (!isValidEmail()) {
                 mEmailErrorMsg.setVisibility(View.VISIBLE);
             }
-            if(!isValidPassword()) {
+            if (!isValidPassword()) {
                 mPasswordErrorMsg.setVisibility(View.VISIBLE);
             }
-            if(isValidEmail() && isValidPassword()) {
+            if (isValidEmail() && isValidPassword()) {
                 mRegisterBtn.handleLoadingStatus(true);
                 mModel.observeSignedInLiveData(this, isSuccessful -> {
                     mRegisterBtn.handleLoadingStatus(false);
@@ -65,11 +65,7 @@ public class RegisterActivity extends GagBaseActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        Snackbar snackbar = Snackbar.make(mEmail, "Email already exists", Snackbar.LENGTH_LONG);
-                        View snackbarView = snackbar.getView();
-                        snackbarView.setBackgroundColor(Color.LTGRAY);
-                        ((TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text)).setTextColor(getResources().getColor(R.color.colorPrimary));
-                        snackbar.show();
+                        UIUtils.showSnackbar(this, mEmail, R.color.colorPrimary, "Email already exists", Snackbar.LENGTH_LONG);
                     }
                 });
 
@@ -88,22 +84,21 @@ public class RegisterActivity extends GagBaseActivity {
         return mPassword.getText().toString().equals(mPasswordValidator.getText().toString()) && !TextUtils.isEmpty(mPassword.getText().toString());
     }
 
-    private void updatePasswordErrorMsg(View view, boolean isFocused){
-        if(isFocused){
+    private void updatePasswordErrorMsg(View view, boolean isFocused) {
+        if (isFocused) {
             mPasswordErrorMsg.setVisibility(View.INVISIBLE);
         }
-        if(!isFocused && !isValidPassword() && !TextUtils.isEmpty(mPasswordValidator.getText().toString())) {
+        if (!isFocused && !isValidPassword() && !TextUtils.isEmpty(mPasswordValidator.getText().toString())) {
             //The password is invalid
             mPasswordErrorMsg.setVisibility(View.VISIBLE);
-        }
-        else if(!isFocused){
+        } else if (!isFocused) {
             //The password is valid
             mPasswordErrorMsg.setVisibility(View.INVISIBLE);
         }
     }
 
     private void updateEmailErrorMsg(View view, boolean isFocused) {
-        if(!isFocused && !isValidEmail()) {
+        if (!isFocused && !isValidEmail()) {
             //The email is invalid
             mEmailErrorMsg.setVisibility(View.VISIBLE);
         } else if (isFocused) {

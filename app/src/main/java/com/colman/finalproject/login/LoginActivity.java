@@ -4,11 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.support.design.widget.Snackbar;
-import android.support.transition.AutoTransition;
-import android.support.transition.TransitionManager;
 import android.widget.EditText;
 
 import com.colman.finalproject.R;
@@ -17,6 +12,12 @@ import com.colman.finalproject.register.RegisterActivity;
 import com.colman.finalproject.tabs.MainActivity;
 import com.colman.finalproject.utils.UIUtils;
 import com.colman.finalproject.view.LoaderButton;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.transition.AutoTransition;
+import androidx.transition.TransitionManager;
 
 //TODO add error handling and edit text verification + loading and disabling buttons
 //and move logic to view model

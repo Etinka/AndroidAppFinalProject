@@ -1,7 +1,6 @@
 package com.colman.finalproject.map;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,8 @@ import com.colman.finalproject.bases.GagBaseFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+
+import androidx.annotation.NonNull;
 
 public class MapFragment extends GagBaseFragment implements OnMapReadyCallback {
 

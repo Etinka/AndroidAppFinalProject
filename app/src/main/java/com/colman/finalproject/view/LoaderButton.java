@@ -2,8 +2,6 @@ package com.colman.finalproject.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +10,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.colman.finalproject.R;
+
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 

@@ -1,8 +1,5 @@
 package com.colman.finalproject.model;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.Observer;
-
 import com.colman.finalproject.model.firebase.FirebaseManager;
 import com.colman.finalproject.model.firebase.IFirebaseManager;
 import com.colman.finalproject.models.Comment;
@@ -10,6 +7,9 @@ import com.colman.finalproject.models.Property;
 import com.google.firebase.Timestamp;
 
 import java.util.List;
+
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 
 public class Model {
     private static Model _instance;

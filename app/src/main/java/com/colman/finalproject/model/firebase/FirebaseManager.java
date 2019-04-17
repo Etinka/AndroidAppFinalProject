@@ -1,9 +1,5 @@
 package com.colman.finalproject.model.firebase;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
-
 import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
 import com.colman.finalproject.utils.DateTimeUtils;
@@ -16,6 +12,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 public class FirebaseManager implements IFirebaseManager {
     private Logger logger = new Logger(this.getClass().getSimpleName());

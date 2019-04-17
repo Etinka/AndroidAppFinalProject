@@ -3,9 +3,6 @@ package com.colman.finalproject.tabs;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 
 import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseActivity;
@@ -13,6 +10,10 @@ import com.colman.finalproject.map.MapFragment;
 import com.colman.finalproject.properties.PropertiesListFragment;
 import com.colman.finalproject.properties.PropertyDetailsFragment;
 import com.colman.finalproject.utils.FragmentsTypes;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends GagBaseActivity {
 
