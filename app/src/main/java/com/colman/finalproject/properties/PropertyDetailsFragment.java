@@ -6,14 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.colman.finalproject.R;
-import com.colman.finalproject.bases.GagBaseFragment;
-import com.colman.finalproject.models.Property;
-import com.colman.finalproject.utils.Consts;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
+
+import com.colman.finalproject.R;
+import com.colman.finalproject.bases.GagBaseFragment;
+import com.colman.finalproject.models.Property;
 
 public class PropertyDetailsFragment extends GagBaseFragment {
 
@@ -36,11 +35,10 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (rootView == null) {
+        if (rootView == null && getArguments() != null) {
             rootView = inflater.inflate(R.layout.property_details_fragment, container, false);
             findViews();
-
-            mProperty = getArguments().getParcelable(Consts.PROPERTY_DATA);
+            mProperty = PropertyDetailsFragmentArgs.fromBundle(getArguments()).getProperty();
             fillPropertyData();
         }
 
@@ -60,17 +58,17 @@ public class PropertyDetailsFragment extends GagBaseFragment {
         mSafeRoom = rootView.findViewById(R.id.details_safe_room);
     }
 
-    private void fillPropertyData(){
-        mPrice.setText(getString(R.string.price,mProperty.getPrice()));
+    private void fillPropertyData() {
+        mPrice.setText(getString(R.string.price, mProperty.getPrice()));
         mAddress.setText(mProperty.getAddress());
         mType.setText(mProperty.getHouseType());
-        mNumRooms.setText(getString(R.string.num_rooms,mProperty.getNumberOfRooms()));
-        mBalcony.setText(getString(R.string.balcony,mProperty.getBalcony()));
-        mSize.setText(getString(R.string.size,mProperty.getSize()));
-        mFloor.setText(getString(R.string.floor,mProperty.getFloor()));
-        mElevator.setText(getString(R.string.elevator,mProperty.isElevator() ?
+        mNumRooms.setText(getString(R.string.num_rooms, mProperty.getNumberOfRooms()));
+        mBalcony.setText(getString(R.string.balcony, mProperty.getBalcony()));
+        mSize.setText(getString(R.string.size, mProperty.getSize()));
+        mFloor.setText(getString(R.string.floor, mProperty.getFloor()));
+        mElevator.setText(getString(R.string.elevator, mProperty.isElevator() ?
                 getString(R.string.available) : getString(R.string.unavailable)));
-        mSafeRoom.setText(getString(R.string.safe_room,mProperty.isSafeRoom() ?
+        mSafeRoom.setText(getString(R.string.safe_room, mProperty.isSafeRoom() ?
                 getString(R.string.available) : getString(R.string.unavailable)));
 
     }

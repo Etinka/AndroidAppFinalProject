@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_secondary"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.colman.finalproject.properties.PropertiesListFragment"
+        android:label="properties_list_fragment"
+        tools:layout="@layout/properties_list_fragment" >
+        <action
+            android:id="@+id/action_navigation_home_to_propertyDetailsFragment"
+            app:destination="@id/property_details_fragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.colman.finalproject.map.MapFragment"
+        android:label="Map" >
+        <action
+            android:id="@+id/action_navigation_map_to_property_details_fragment"
+            app:destination="@id/property_details_fragment" />
+    </fragment>
+
+    <fragment android:id="@+id/navigation_settings"
+        android:name="com.colman.finalproject.settings.SettingsFragment"
+        android:label="Settings" />
+    <fragment
+        android:id="@+id/property_details_fragment"
+        android:name="com.colman.finalproject.properties.PropertyDetailsFragment"
+        android:label="property_details_fragment"
+        tools:layout="@layout/property_details_fragment" >
+        <argument
+            android:name="property"
+            app:argType="com.colman.finalproject.models.Property" />
+    </fragment>
+
+</navigation>
