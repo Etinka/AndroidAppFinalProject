@@ -66,8 +66,10 @@ public class Model {
         @Override
         public void updatedCommentsForProperty(int propertyId, List<Comment> commentList) {
             if (commentList != null) {
-                for (Comment comment: commentList) {
-                    mRepository.insert(comment);
+                for (Comment comment : commentList) {
+                    if (!comment.getId().isEmpty()) {
+                        mRepository.insert(comment);
+                    }
                 }
             }
         }
@@ -87,6 +89,10 @@ public class Model {
 
     public String getUserUid() {
         return mFirebaseManager.getUserUid();
+    }
+
+    public String getUserName() {
+        return "temp user name";
     }
 
     public void registerUser(String email, String password, String userName) {
@@ -116,6 +122,10 @@ public class Model {
 
     public void addComment(Comment comment) {
         mFirebaseManager.addComment(comment);
+    }
+
+    public void deleteComment(Comment comment) {
+        mFirebaseManager.deleteComment(comment);
     }
 
     private void getCommentsForProperty(int propertyId) {

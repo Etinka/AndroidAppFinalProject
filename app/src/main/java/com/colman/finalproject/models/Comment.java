@@ -60,20 +60,9 @@ public class Comment{
     }
 
     @Ignore
-    public Comment(@NonNull String id, @NonNull String text, @Nullable String imageUrl,
-                   @NonNull String userUid, @NonNull Timestamp date, @NonNull String userName, boolean isActive) {
-        this.id = id;
-        this.text = text;
-        this.imageUrl = imageUrl;
-        this.userUid = userUid;
-//        this.date = date;
-        this.userName = userName;
-        this.isActive = isActive;
-    }
-
-    @Ignore
-    public Comment(@NonNull String id, @NonNull String text, @Nullable String imageUrl, @NonNull String userUid, @NonNull Timestamp date, @NonNull String userName, boolean isActive, int propertyId) {
-        this.id = id;
+    public Comment( @NonNull String text, @Nullable String imageUrl,
+                   @NonNull String userUid, @NonNull Timestamp date, @NonNull String userName,
+                   boolean isActive, int propertyId) {
         this.text = text;
         this.imageUrl = imageUrl;
         this.userUid = userUid;

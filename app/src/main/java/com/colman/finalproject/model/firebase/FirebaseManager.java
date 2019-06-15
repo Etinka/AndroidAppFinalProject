@@ -108,7 +108,18 @@ public class FirebaseManager implements IFirebaseManager {
 
     @Override
     public void addComment(Comment comment) {
-        mCommentsCollectionRef.add(comment);
+        mCommentsCollectionRef.add(comment).addOnCompleteListener(task -> {
+            if (task.getResult() != null && task.isSuccessful()) {
+                comment.setId(task.getResult().getId());
+                task.getResult().set(comment);
+            }
+        });
+    }
+
+    @Override
+    public void deleteComment(Comment comment) {
+        comment.setActive(false);
+        mCommentsCollectionRef.document(comment.getId()).set(comment);
     }
 
     @Override

@@ -8,12 +8,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseFragment;
 import com.colman.finalproject.models.Property;
 import com.google.android.material.tabs.TabLayout;
+
 
 public class PropertyDetailsFragment extends GagBaseFragment {
 
@@ -31,25 +33,29 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     private TextView mElevator;
     private TextView mSafeRoom;
 
-    private int mPropertyId;
+    private PropertyDetailsViewModel mViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (rootView == null && getArguments() != null) {
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.property_details_fragment, container, false);
             findViews();
-            mPropertyId = PropertyDetailsFragmentArgs.fromBundle(getArguments()).getPropertyId();
         }
 
         return rootView;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        mModel.observePropertyLiveData(mPropertyId, getViewLifecycleOwner(), property -> {
+        mViewModel = ViewModelProviders.of(this).get(PropertyDetailsViewModel.class);
+
+        int propertyId = (getArguments() != null) ?
+                PropertyDetailsFragmentArgs.fromBundle(getArguments()).getPropertyId() : 0;
+
+        mViewModel.setPropertyId(propertyId, getViewLifecycleOwner(), property -> {
             if (property != null) {
                 fillPropertyData(property);
             }
@@ -90,6 +96,5 @@ public class PropertyDetailsFragment extends GagBaseFragment {
         );
 
         dotsIndicator.setupWithViewPager(mImagePager);
-
     }
 }

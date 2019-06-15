@@ -27,5 +27,7 @@ public interface IFirebaseManager {
 
     void addComment(Comment comment);
 
+    void deleteComment(Comment comment);
+
 }
 
