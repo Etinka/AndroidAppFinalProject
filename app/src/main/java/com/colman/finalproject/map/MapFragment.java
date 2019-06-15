@@ -78,7 +78,5 @@ public class MapFragment extends GagBaseFragment implements OnMapReadyCallback {
                         0));
             }
         });
-
-        mModel.getAllProperties();
     }
 }
