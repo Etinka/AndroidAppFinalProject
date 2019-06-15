@@ -14,6 +14,7 @@ public class PropertyRepository {
 
     private PropertyDao mPropertyDao;
     private CommentDao mCommentDao;
+    private LiveData<Property> mProperty;
     private LiveData<List<Property>> mAllProperties;
     private LiveData<List<Comment>> mAllComments;
 
@@ -27,6 +28,11 @@ public class PropertyRepository {
 
     public LiveData<List<Property>> getAllProperties() {
         return mAllProperties;
+    }
+
+    public LiveData<Property> getPropertyById(int propertyId){
+        mProperty = mPropertyDao.getPropertyById(propertyId);
+        return mProperty;
     }
 
     public LiveData<List<Comment>> getAllComment() {

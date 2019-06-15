@@ -34,7 +34,7 @@ public class PropertiesListFragment extends GagBaseFragment {
             rootView = inflater.inflate(R.layout.properties_list_fragment, container, false);
             propertiesList = rootView.findViewById(R.id.properties_list);
 
-            mModel.observePropertiesLiveData(this, properties -> {
+            mModel.observePropertiesLiveData(getViewLifecycleOwner(), properties -> {
                 this.properties.clear();
                 if (properties != null) {
                     this.properties.addAll(properties);
