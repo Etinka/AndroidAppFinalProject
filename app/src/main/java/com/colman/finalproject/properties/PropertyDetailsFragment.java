@@ -45,6 +45,12 @@ public class PropertyDetailsFragment extends GagBaseFragment {
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mModel.observePropertyLiveData(mProperty.getId(), getViewLifecycleOwner(), property -> logger.logDebug("Property onChanged " + property));
+    }
+
     private void findViews() {
         mImagePager = rootView.findViewById(R.id.property_details_image);
         mPrice = rootView.findViewById(R.id.details_price);

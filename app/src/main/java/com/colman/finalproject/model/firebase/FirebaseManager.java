@@ -1,7 +1,6 @@
 package com.colman.finalproject.model.firebase;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -120,22 +119,21 @@ public class FirebaseManager implements IFirebaseManager {
     }
 
     @Override
-    public LiveData<List<Property>> getAllProperties(long from) {
+    public void getAllProperties(long from, IFirebaseListener listener) {
         if (from <= 0) {
-            getAllProperties(DateTimeUtils.getTimeStamp(2018, 1, 1));
+            getAllProperties(DateTimeUtils.getTimeStamp(2018, 1, 1), listener);
         } else {
-            getAllProperties(DateTimeUtils.getTimestampFromLong(from));
+            getAllProperties(DateTimeUtils.getTimestampFromLong(from), listener);
         }
-        return mPropertiesLiveData;
     }
 
     @Override
-    public void updatePropertyListener(long from) {
+    public void updatePropertyListener(long from, IFirebaseListener listener) {
         listenerRegistration.remove();
-        getAllProperties(DateTimeUtils.getTimestampFromLong(from));
+        getAllProperties(DateTimeUtils.getTimestampFromLong(from), listener);
     }
 
-    private void getAllProperties(Timestamp from) {
+    private void getAllProperties(Timestamp from, IFirebaseListener listener) {
         listenerRegistration = mPropertiesCollectionRef.whereGreaterThan("lastUpdate", from).addSnapshotListener((snapshot, e) -> {
             if (e != null) {
                 logger.logWarning("Listen failed.", e);
@@ -148,7 +146,7 @@ public class FirebaseManager implements IFirebaseManager {
                 for (DocumentChange docChange : snapshot.getDocumentChanges()) {
                     properties.add(docChange.getDocument().toObject(Property.class));
                 }
-                mPropertiesLiveData.postValue(properties);
+                listener.updatedProperties(properties);
                 logger.logDebug("Current properties number: " + properties.size());
             }
         });

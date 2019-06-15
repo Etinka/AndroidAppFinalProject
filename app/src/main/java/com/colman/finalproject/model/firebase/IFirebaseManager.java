@@ -1,11 +1,9 @@
 package com.colman.finalproject.model.firebase;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.colman.finalproject.models.Comment;
-import com.colman.finalproject.models.Property;
 
 import java.util.List;
 
@@ -23,9 +21,9 @@ public interface IFirebaseManager {
 
     void observeSignedInLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer);
 
-    LiveData<List<Property>> getAllProperties(long from);
+    void getAllProperties(long from, IFirebaseListener listener);
 
-    void updatePropertyListener(long from);
+    void updatePropertyListener(long from, IFirebaseListener listener);
 
     void observeCommentsLiveData(LifecycleOwner lifecycleOwner, Observer<List<Comment>> observer);
 
