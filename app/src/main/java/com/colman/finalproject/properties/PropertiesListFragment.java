@@ -43,7 +43,7 @@ public class PropertiesListFragment extends GagBaseFragment {
                         propertiesList.setAdapter(adapter);
                         adapter.setOnItemClickListener(position -> {
                             PropertiesListFragmentDirections.ActionNavigationHomeToPropertyDetailsFragment directions =
-                                    PropertiesListFragmentDirections.actionNavigationHomeToPropertyDetailsFragment(properties.get(position));
+                                    PropertiesListFragmentDirections.actionNavigationHomeToPropertyDetailsFragment().setPropertyId(properties.get(position).getId());
                             Navigation.findNavController(rootView).navigate(directions);
                         });
                     } else {
