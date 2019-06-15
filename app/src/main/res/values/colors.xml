@@ -6,4 +6,7 @@
     <color name="item_background">#CCFFFFFF</color>
     <color name="separator">#A2439A</color>
     <color name="colorAccentDisabled">#33E53367</color>
+    <color name="red">#ffcc0000</color>
+    <color name="red_disabled">#33cc0000</color>
+
 </resources>

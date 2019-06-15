@@ -3,5 +3,6 @@
     <declare-styleable name="LoaderButton">
         <attr name="ctext" format="string" />
         <attr name="cenabled" format="boolean" />
+        <attr name="cbackground" format="reference"/>
     </declare-styleable>
 </resources>

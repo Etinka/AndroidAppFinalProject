@@ -2,6 +2,7 @@ package com.colman.finalproject.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,15 +23,22 @@ public class LoaderButton extends ConstraintLayout {
     private ProgressBar loader;
     private String buttonText;
 
+    private Drawable buttonBackground;
+
     public LoaderButton(Context context) {
         super(context);
     }
 
     public LoaderButton(Context context, AttributeSet attrs) {
         super(context, attrs);
+        buttonBackground = getResources().getDrawable(R.drawable.app_button_background);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LoaderButton, 0, 0);
         String buttonText = typedArray.getString(R.styleable.LoaderButton_ctext);
         boolean isEnabled = typedArray.getBoolean(R.styleable.LoaderButton_cenabled, true);
+        Drawable background = typedArray.getDrawable(R.styleable.LoaderButton_cbackground);
+        if(background != null){
+            buttonBackground = background;
+        }
         typedArray.recycle();
         init(buttonText, isEnabled);
     }
@@ -40,6 +48,10 @@ public class LoaderButton extends ConstraintLayout {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LoaderButton, defStyleAttr, 0);
         String buttonText = typedArray.getString(R.styleable.LoaderButton_ctext);
         boolean isEnabled = typedArray.getBoolean(R.styleable.LoaderButton_cenabled, true);
+        Drawable background = typedArray.getDrawable(R.styleable.LoaderButton_cbackground);
+        if(background != null){
+            buttonBackground = background;
+        }
         typedArray.recycle();
         init(buttonText, isEnabled);
     }
@@ -59,6 +71,7 @@ public class LoaderButton extends ConstraintLayout {
         loader = customView.findViewById(R.id.custom_loader);
         button.setEnabled(isEnabled);
         button.setText(text);
+        button.setBackground(buttonBackground);
     }
 
     public void setEnabled(boolean isEnabled){
