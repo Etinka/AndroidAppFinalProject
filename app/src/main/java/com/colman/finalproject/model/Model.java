@@ -62,6 +62,15 @@ public class Model {
                 setLastUpdatedTimestamp(lastUpdated);
             }
         }
+
+        @Override
+        public void updatedCommentsForProperty(int propertyId, List<Comment> commentList) {
+            if (commentList != null) {
+                for (Comment comment: commentList) {
+                    mRepository.insert(comment);
+                }
+            }
+        }
     };
 
     private long getLastUpdatedTimestamp() {
@@ -100,16 +109,17 @@ public class Model {
         mRepository.getAllProperties().observe(lifecycleOwner, observer);
     }
 
-    public void observeCommentsLiveData(LifecycleOwner lifecycleOwner, Observer<List<Comment>> observer) {
-        mFirebaseManager.observeCommentsLiveData(lifecycleOwner, observer);
+    public void observeCommentsLiveData(int propertyId, LifecycleOwner lifecycleOwner, Observer<List<Comment>> observer) {
+        mRepository.getCommentByPropertyId(propertyId).observe(lifecycleOwner, observer);
+        getCommentsForProperty(propertyId);
     }
 
     public void addComment(Comment comment) {
         mFirebaseManager.addComment(comment);
     }
 
-    public void getCommentsForProperty(int propertyId) {
-        mFirebaseManager.getCommentsForProperty(propertyId);
+    private void getCommentsForProperty(int propertyId) {
+        mFirebaseManager.getCommentsForProperty(propertyId, firebaseListener);
     }
 
     public void observePropertyLiveData(int propertyId, LifecycleOwner lifecycleOwner, Observer<Property> observer) {

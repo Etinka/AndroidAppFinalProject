@@ -22,6 +22,6 @@ public interface PropertyDao {
     @Query("SELECT * from property_table")
     LiveData<List<Property>> getAllProperty();
 
-    @Query("SELECT * FROM property_table WHERE property_id = :propertyId ")
+    @Query("SELECT * FROM property_table WHERE property_id = :propertyId")
     LiveData<Property> getPropertyById(int propertyId);
 }

@@ -28,8 +28,6 @@ public class FirebaseManager implements IFirebaseManager {
     private CollectionReference mPropertiesCollectionRef = mDb.collection("properties");
     private CollectionReference mCommentsCollectionRef = mDb.collection("comments");
     private CollectionReference mUsersCollectionRef = mDb.collection("users");
-    private MutableLiveData<List<Property>> mPropertiesLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<Comment>> mCommentsLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mSignedInLiveData = new MutableLiveData<>();
     private ListenerRegistration listenerRegistration;
 
@@ -94,12 +92,7 @@ public class FirebaseManager implements IFirebaseManager {
 
     //Properties
     @Override
-    public void observeCommentsLiveData(LifecycleOwner lifecycleOwner, Observer<List<Comment>> observer) {
-        mCommentsLiveData.observe(lifecycleOwner, observer);
-    }
-
-    @Override
-    public void getCommentsForProperty(int propertyId) {
+    public void getCommentsForProperty(int propertyId, IFirebaseListener listener) {
         mCommentsCollectionRef.whereEqualTo("propertyId", propertyId).addSnapshotListener((snapshot, e) -> {
             if (e != null) {
                 logger.logWarning("getCommentsForProperty failed.", e);
@@ -109,7 +102,7 @@ public class FirebaseManager implements IFirebaseManager {
             if (snapshot != null && !snapshot.isEmpty()) {
                 comments = snapshot.toObjects(Comment.class);
             }
-            mCommentsLiveData.postValue(comments);
+            listener.updatedCommentsForProperty(propertyId, comments);
         });
     }
 
