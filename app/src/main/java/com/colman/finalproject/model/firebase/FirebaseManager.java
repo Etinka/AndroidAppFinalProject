@@ -1,5 +1,9 @@
 package com.colman.finalproject.model.firebase;
 
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
 import com.colman.finalproject.utils.DateTimeUtils;
@@ -8,14 +12,12 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 public class FirebaseManager implements IFirebaseManager {
     private Logger logger = new Logger(this.getClass().getSimpleName());
@@ -29,6 +31,7 @@ public class FirebaseManager implements IFirebaseManager {
     private MutableLiveData<List<Property>> mPropertiesLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Comment>> mCommentsLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mSignedInLiveData = new MutableLiveData<>();
+    private ListenerRegistration listenerRegistration;
 
     private FirebaseManager() {
     }
@@ -90,10 +93,6 @@ public class FirebaseManager implements IFirebaseManager {
     }
 
     //Properties
-    public void observePropertiesLiveData(LifecycleOwner lifecycleOwner, Observer<List<Property>> observer) {
-        mPropertiesLiveData.observe(lifecycleOwner, observer);
-    }
-
     @Override
     public void observeCommentsLiveData(LifecycleOwner lifecycleOwner, Observer<List<Comment>> observer) {
         mCommentsLiveData.observe(lifecycleOwner, observer);
@@ -120,27 +119,42 @@ public class FirebaseManager implements IFirebaseManager {
     }
 
     @Override
-    public void getAllProperties() {
-        getAllProperties(DateTimeUtils.getTimeStamp(2018, 1, 1));
+    public void getAllProperties(long from, IFirebaseListener listener) {
+        if (from <= 0) {
+            getAllProperties(DateTimeUtils.getTimeStamp(2018, 1, 1), listener);
+        } else {
+            getAllProperties(DateTimeUtils.getTimestampFromLong(from), listener);
+        }
     }
 
     @Override
-    public void getAllProperties(Timestamp from) {
-        mPropertiesCollectionRef.whereGreaterThan("lastUpdate", from).addSnapshotListener((snapshot, e) -> {
+    public void updatePropertyListener(long from, IFirebaseListener listener) {
+        listenerRegistration.remove();
+        getAllProperties(DateTimeUtils.getTimestampFromLong(from), listener);
+    }
+
+    private void getAllProperties(Timestamp from, IFirebaseListener listener) {
+        listenerRegistration = mPropertiesCollectionRef.whereGreaterThan("lastUpdate", from).addSnapshotListener((snapshot, e) -> {
             if (e != null) {
                 logger.logWarning("Listen failed.", e);
                 return;
             }
-            List<Property> properties = new ArrayList<>();
             if (snapshot != null && !snapshot.isEmpty()) {
+                logger.logDebug("Current properties snapshot.getDocumentChanges() number: " + snapshot.getDocumentChanges().size());
+                List<Property> properties = new ArrayList<>();
+                snapshot.getDocumentChanges().get(0).getDocument().toObject(Property.class);
+                for (DocumentChange docChange : snapshot.getDocumentChanges()) {
+                    properties.add(docChange.getDocument().toObject(Property.class));
+                }
+
                 properties = snapshot.toObjects(Property.class);
                 for (int i = 0; i < properties.size(); i++) {
                     properties.get(i).setImages(((List<String>) snapshot.getDocuments().get(i).get("imagesUrls")));
                 }
+
+                listener.updatedProperties(properties);
+                logger.logDebug("Current properties number: " + properties.size());
             }
-            mPropertiesLiveData.postValue(properties);
-            logger.logDebug("Current properties number: " + properties.size());
         });
     }
-
 }

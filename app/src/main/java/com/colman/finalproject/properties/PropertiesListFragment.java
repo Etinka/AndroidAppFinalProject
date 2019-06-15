@@ -5,19 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseFragment;
 import com.colman.finalproject.models.Property;
-import com.colman.finalproject.tabs.MainActivity;
-import com.colman.finalproject.utils.Consts;
-import com.colman.finalproject.utils.FragmentsTypes;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class PropertiesListFragment extends GagBaseFragment {
 
@@ -36,28 +34,23 @@ public class PropertiesListFragment extends GagBaseFragment {
             rootView = inflater.inflate(R.layout.properties_list_fragment, container, false);
             propertiesList = rootView.findViewById(R.id.properties_list);
 
-            mModel.observePropertiesLiveData(this, properties -> {
+            mModel.observePropertiesLiveData(getViewLifecycleOwner(), properties -> {
                 this.properties.clear();
-                if(properties != null) {
+                if (properties != null) {
                     this.properties.addAll(properties);
                     if (adapter == null) {
                         adapter = new PropertiesAdapter(getContext(), this.properties);
                         propertiesList.setAdapter(adapter);
                         adapter.setOnItemClickListener(position -> {
-                            Bundle args = new Bundle();
-                            args.putParcelable(Consts.PROPERTY_DATA, properties.get(position));
-                            ((MainActivity) getActivity()).showOtherScreen(
-                                    FragmentsTypes.PROPERTY_SCREEN,
-                                    args
-                            );
+                            PropertiesListFragmentDirections.ActionNavigationHomeToPropertyDetailsFragment directions =
+                                    PropertiesListFragmentDirections.actionNavigationHomeToPropertyDetailsFragment(properties.get(position));
+                            Navigation.findNavController(rootView).navigate(directions);
                         });
                     } else {
                         adapter.notifyDataSetChanged();
                     }
                 }
             });
-
-            mModel.getAllProperties();
         }
 
         return rootView;

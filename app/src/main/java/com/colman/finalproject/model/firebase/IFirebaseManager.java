@@ -1,13 +1,11 @@
 package com.colman.finalproject.model.firebase;
 
-import com.colman.finalproject.models.Comment;
-import com.colman.finalproject.models.Property;
-import com.google.firebase.Timestamp;
-
-import java.util.List;
-
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+
+import com.colman.finalproject.models.Comment;
+
+import java.util.List;
 
 public interface IFirebaseManager {
 
@@ -23,12 +21,9 @@ public interface IFirebaseManager {
 
     void observeSignedInLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer);
 
+    void getAllProperties(long from, IFirebaseListener listener);
 
-    void getAllProperties();
-
-    void getAllProperties(Timestamp from);
-
-    void observePropertiesLiveData(LifecycleOwner lifecycleOwner, Observer<List<Property>> observer);
+    void updatePropertyListener(long from, IFirebaseListener listener);
 
     void observeCommentsLiveData(LifecycleOwner lifecycleOwner, Observer<List<Comment>> observer);
 
