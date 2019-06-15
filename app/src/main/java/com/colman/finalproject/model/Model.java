@@ -92,7 +92,11 @@ public class Model {
     }
 
     public String getUserName() {
-        return "temp user name";
+        return mFirebaseManager.getUserName();
+    }
+
+    public String getUserEmail() {
+        return mFirebaseManager.getUserEmail();
     }
 
     public void registerUser(String email, String password, String userName) {
@@ -101,6 +105,10 @@ public class Model {
 
     public void signInUser(String email, String password) {
         mFirebaseManager.signInUser(email, password);
+    }
+
+    public void updateUserDetails(String userName) {
+        mFirebaseManager.updateUserDetails(userName);
     }
 
     public void logout() {

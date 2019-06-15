@@ -4,18 +4,16 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.colman.finalproject.model.Model;
+import com.colman.finalproject.bases.GagBaseViewModel;
 import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
 import com.google.firebase.Timestamp;
 
-public class PropertyDetailsViewModel extends AndroidViewModel {
-    private Model mModel = Model.getInstance();
+public class PropertyDetailsViewModel extends GagBaseViewModel {
 
     private Property mProperty;
     private MutableLiveData<Property> mPropertyLiveData = new MutableLiveData<>();

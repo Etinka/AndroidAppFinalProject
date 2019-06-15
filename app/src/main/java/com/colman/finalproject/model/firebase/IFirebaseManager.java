@@ -11,6 +11,12 @@ public interface IFirebaseManager {
 
     String getUserUid();
 
+    String getUserName();
+
+    String getUserEmail();
+
+    void updateUserDetails(String userName);
+
     void registerUser(String email, String password, String userName);
 
     void signInUser(String email, String password);
