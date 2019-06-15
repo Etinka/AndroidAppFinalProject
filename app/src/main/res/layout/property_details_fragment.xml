@@ -16,7 +16,19 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/dots_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tabBackground="@drawable/dots_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            android:layoutDirection="locale"
+            app:layout_constraintBottom_toBottomOf="@id/property_details_image"
+            app:layout_constraintStart_toStartOf="@id/property_details_image"
+            app:layout_constraintEnd_toEndOf="@id/property_details_image"/>
 
         <TextView
             android:id="@+id/details_price"

@@ -10,6 +10,7 @@ import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseFragment;
 import com.colman.finalproject.models.Property;
 import com.colman.finalproject.utils.Consts;
+import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     //View
     private View rootView;
     private ViewPager mImagePager;
+    private TabLayout dotsIndicator;
     private TextView mPrice;
     private TextView mAddress;
     private TextView mType;
@@ -40,7 +42,10 @@ public class PropertyDetailsFragment extends GagBaseFragment {
             rootView = inflater.inflate(R.layout.property_details_fragment, container, false);
             findViews();
 
-            mProperty = getArguments().getParcelable(Consts.PROPERTY_DATA);
+            if (getArguments()!=null) {
+                mProperty = getArguments().getParcelable(Consts.PROPERTY_DATA);
+            }
+
             fillPropertyData();
         }
 
@@ -58,6 +63,7 @@ public class PropertyDetailsFragment extends GagBaseFragment {
         mFloor = rootView.findViewById(R.id.details_floor);
         mElevator = rootView.findViewById(R.id.details_elevator);
         mSafeRoom = rootView.findViewById(R.id.details_safe_room);
+        dotsIndicator = rootView.findViewById(R.id.dots_indicator);
     }
 
     private void fillPropertyData(){
@@ -72,6 +78,14 @@ public class PropertyDetailsFragment extends GagBaseFragment {
                 getString(R.string.available) : getString(R.string.unavailable)));
         mSafeRoom.setText(getString(R.string.safe_room,mProperty.isSafeRoom() ?
                 getString(R.string.available) : getString(R.string.unavailable)));
+
+
+        mImagePager.setAdapter(new PropertyImagesAdapter(
+                getContext(),
+                mProperty.getImages())
+        );
+
+        dotsIndicator.setupWithViewPager(mImagePager);
 
     }
 }

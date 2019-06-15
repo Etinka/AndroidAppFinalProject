@@ -134,6 +134,9 @@ public class FirebaseManager implements IFirebaseManager {
             List<Property> properties = new ArrayList<>();
             if (snapshot != null && !snapshot.isEmpty()) {
                 properties = snapshot.toObjects(Property.class);
+                for (int i = 0; i < properties.size(); i++) {
+                    properties.get(i).setImages(((List<String>) snapshot.getDocuments().get(i).get("imagesUrls")));
+                }
             }
             mPropertiesLiveData.postValue(properties);
             logger.logDebug("Current properties number: " + properties.size());

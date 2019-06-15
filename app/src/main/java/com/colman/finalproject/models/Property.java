@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,17 @@ public class Property implements Parcelable {
     @NonNull
     private String balcony = "";
     @NonNull
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments;
+    @NonNull
+    private List<String> imagesUrls = new ArrayList<>();
     @Nullable
     private Timestamp lastUpdate;
+    @Nullable
+    private GeoPoint geoPoint;
+    @NonNull
+    private double latitude;
+    @NonNull
+    private double longitude;
 
     public Property() {
     }
@@ -54,7 +63,35 @@ public class Property implements Parcelable {
         this.houseType = in.readString();
         this.balcony = in.readString();
         this.comments = in.readArrayList(Comment.class.getClassLoader());
+        this.imagesUrls = in.readArrayList(String.class.getClassLoader());
         this.lastUpdate = in.readParcelable(Timestamp.class.getClassLoader());
+        this.latitude = in.readDouble();
+        this.longitude = in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeByte((byte)(elevator ? 1 : 0));
+        parcel.writeByte((byte)(safeRoom ? 1 : 0));
+        parcel.writeString(address);
+        parcel.writeString(price);
+        parcel.writeString(numberOfRooms);
+        parcel.writeString(imageUrl);
+        parcel.writeString(floor);
+        parcel.writeString(size);
+        parcel.writeString(houseType);
+        parcel.writeString(balcony);
+        parcel.writeList(comments);
+        parcel.writeList(imagesUrls);
+        parcel.writeParcelable(lastUpdate, i);
+        parcel.writeDouble(geoPoint.getLatitude());
+        parcel.writeDouble(geoPoint.getLongitude());
     }
 
     public int getId() {
@@ -153,6 +190,22 @@ public class Property implements Parcelable {
         this.balcony = balcony;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     @NonNull
     public List<Comment> getComments() {
         return comments;
@@ -170,6 +223,15 @@ public class Property implements Parcelable {
 
     public void setComments(@NonNull List<Comment> comments) {
         this.comments = comments;
+    }
+
+    @NonNull
+    public List<String> getImages() {
+        return imagesUrls;
+    }
+
+    public void setImages(@NonNull List<String> images) {
+        this.imagesUrls = images;
     }
 
     @Nullable
@@ -196,6 +258,7 @@ public class Property implements Parcelable {
                 ", houseType='" + houseType + '\'' +
                 ", balcony='" + balcony + '\'' +
                 ", comments=" + comments +
+                ". images = " + imagesUrls +
                 ", lastUpdate=" + lastUpdate +
                 '}';
     }
@@ -209,26 +272,4 @@ public class Property implements Parcelable {
             return new Property[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeByte((byte)(elevator ? 1 : 0));
-        parcel.writeByte((byte)(safeRoom ? 1 : 0));
-        parcel.writeString(address);
-        parcel.writeString(price);
-        parcel.writeString(numberOfRooms);
-        parcel.writeString(imageUrl);
-        parcel.writeString(floor);
-        parcel.writeString(size);
-        parcel.writeString(houseType);
-        parcel.writeString(balcony);
-        parcel.writeList(comments);
-        parcel.writeParcelable(lastUpdate, i);
-    }
 }
