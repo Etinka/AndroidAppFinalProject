@@ -22,5 +22,10 @@
 
     <string name="available">יש</string>
     <string name="unavailable">אין</string>
+    <string name="user_name_updated">שם המשתמש עודכן בהצלחה</string>
+    <string name="update_info_title">עדכון פרטי משתמש</string>
+    <string name="user_name_hint">שם משתמש</string>
+    <string name="invalid_email_address">Invalid email address</string>
+    <string name="passwords_does_not_match">Passwords does not match</string>
 
 </resources>

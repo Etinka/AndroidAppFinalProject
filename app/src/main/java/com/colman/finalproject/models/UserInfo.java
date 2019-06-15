@@ -3,13 +3,18 @@ package com.colman.finalproject.models;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.colman.finalproject.model.firebase.FirebaseManager;
+
 public class UserInfo {
     @NonNull
-    private String id;
+    private String id = "";
     @NonNull
-    private String email;
+    private String email = "";
     @Nullable
-    private String name;
+    private String name = FirebaseManager.EMPTY_USER_NAME;
+
+    public UserInfo() {
+    }
 
     public UserInfo(@NonNull String id, @NonNull String email, @Nullable String name) {
         this.id = id;

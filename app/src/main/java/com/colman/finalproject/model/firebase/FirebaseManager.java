@@ -10,7 +10,7 @@ import com.colman.finalproject.utils.DateTimeUtils;
 import com.colman.finalproject.utils.Logger;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseManager implements IFirebaseManager {
+    public static String EMPTY_USER_NAME = "משתמש";
     private Logger logger = new Logger(this.getClass().getSimpleName());
 
     private static FirebaseManager _instance;
@@ -27,11 +28,11 @@ public class FirebaseManager implements IFirebaseManager {
     private FirebaseFirestore mDb = FirebaseFirestore.getInstance();
     private CollectionReference mPropertiesCollectionRef = mDb.collection("properties");
     private CollectionReference mCommentsCollectionRef = mDb.collection("comments");
-    private CollectionReference mUsersCollectionRef = mDb.collection("users");
     private MutableLiveData<Boolean> mSignedInLiveData = new MutableLiveData<>();
     private ListenerRegistration listenerRegistration;
 
     private FirebaseManager() {
+
     }
 
     public static FirebaseManager getInstance() {
@@ -52,11 +53,36 @@ public class FirebaseManager implements IFirebaseManager {
     }
 
     @Override
+    public String getUserName() {
+        if (mAuth.getCurrentUser() != null) {
+            return mAuth.getCurrentUser().getDisplayName();
+        }
+        return EMPTY_USER_NAME;
+    }
+
+    @Override
+    public String getUserEmail() {
+        if (mAuth.getCurrentUser() != null) {
+            return mAuth.getCurrentUser().getEmail();
+        }
+        return EMPTY_USER_NAME;
+    }
+
+    @Override
+    public void updateUserDetails(String userName) {
+        if (mAuth.getCurrentUser() != null) {
+            logger.logDebug("updateProfile");
+            UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(userName).build();
+            mAuth.getCurrentUser().updateProfile(userProfileChangeRequest);
+        }
+    }
+
+    @Override
     public void registerUser(String email, String password, String userName) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((authResult) -> {
             if (authResult.isSuccessful()) {
                 logger.logDebug("registerUser:success");
-                //TODO add registering user name to userInfos
+                updateUserDetails(userName);
             } else {
                 logger.logDebug("registerUser:failure");
             }
@@ -70,8 +96,6 @@ public class FirebaseManager implements IFirebaseManager {
             if (authResult.isSuccessful()) {
                 // Sign in success, update UI with the signed-in user's information
                 logger.logDebug("signInWithEmail:success");
-                FirebaseUser user = mAuth.getCurrentUser();
-                //TODO add getting user info
             } else {
                 // If sign in fails, display a message to the user.
                 logger.logWarning("signInWithEmail:failure", authResult.getException());
