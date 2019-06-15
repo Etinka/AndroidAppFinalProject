@@ -3,16 +3,26 @@ package com.colman.finalproject.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.colman.finalproject.room.Converters;
 import com.google.firebase.Timestamp;
 
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 @SuppressWarnings({"unused", "NullableProblems"})
+@Entity(tableName = "comment_table")
+@TypeConverters({Converters.class})
 public class Comment implements Parcelable {
+    @PrimaryKey
     @NonNull
+    @ColumnInfo(name = "comment_id")
     private String id = "";
     @NonNull
     private String text = "";
@@ -32,6 +42,7 @@ public class Comment implements Parcelable {
     public Comment() {
     }
 
+    @Ignore
     public Comment(Parcel in) {
         this.id = Objects.requireNonNull(in.readString());
         this.text = Objects.requireNonNull(in.readString());
@@ -43,6 +54,24 @@ public class Comment implements Parcelable {
         this.propertyId = in.readInt();
     }
 
+    @Ignore
+    public Comment(@NonNull String id, @NonNull String text) {
+        this.id = id;
+        this.text = text;
+    }
+
+    @Ignore
+    public Comment(@NonNull String id, @NonNull String text, @Nullable String imageUrl, @NonNull String userUid, @NonNull Timestamp date, @NonNull String userName, boolean isActive) {
+        this.id = id;
+        this.text = text;
+        this.imageUrl = imageUrl;
+        this.userUid = userUid;
+//        this.date = date;
+        this.userName = userName;
+        this.isActive = isActive;
+    }
+
+    @Ignore
     public Comment(@NonNull String id, @NonNull String text, @Nullable String imageUrl, @NonNull String userUid, @NonNull Timestamp date, @NonNull String userName, boolean isActive, int propertyId) {
         this.id = id;
         this.text = text;
@@ -108,7 +137,7 @@ public class Comment implements Parcelable {
         this.userName = userName;
     }
 
-    boolean isActive() {
+    public boolean isActive() {
         return isActive;
     }
 
