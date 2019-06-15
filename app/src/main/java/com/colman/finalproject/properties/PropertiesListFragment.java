@@ -51,8 +51,6 @@ public class PropertiesListFragment extends GagBaseFragment {
                     }
                 }
             });
-
-            mModel.getAllProperties();
         }
 
         return rootView;
