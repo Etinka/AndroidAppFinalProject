@@ -1,7 +1,6 @@
 package com.colman.finalproject.models;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +18,7 @@ import java.util.Objects;
 @SuppressWarnings({"unused", "NullableProblems"})
 @Entity(tableName = "comment_table")
 @TypeConverters({Converters.class})
-public class Comment implements Parcelable {
+public class Comment{
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "comment_id")
@@ -165,25 +164,5 @@ public class Comment implements Parcelable {
                 ", isActive=" + isActive +
                 ", propertyId=" + propertyId +
                 '}';
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Comment createFromParcel(Parcel in) {
-            return new Comment(in);
-        }
-
-        public Comment[] newArray(int size) {
-            return new Comment[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-
     }
 }

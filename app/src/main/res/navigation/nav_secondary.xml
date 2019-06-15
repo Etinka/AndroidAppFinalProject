@@ -37,8 +37,9 @@
         android:label="property_details_fragment"
         tools:layout="@layout/property_details_fragment" >
         <argument
-            android:name="property"
-            app:argType="com.colman.finalproject.models.Property" />
+            android:name="propertyId"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 
 </navigation>

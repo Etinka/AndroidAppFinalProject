@@ -1,8 +1,5 @@
 package com.colman.finalproject.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
@@ -13,8 +10,6 @@ import androidx.room.TypeConverters;
 
 import com.colman.finalproject.room.Converters;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.database.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +18,7 @@ import java.util.Objects;
 @SuppressWarnings({"unused", "NullableProblems"})
 @Entity(tableName = "property_table")
 @TypeConverters({Converters.class})
-public class Property implements Parcelable{
+public class Property{
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "property_id")
@@ -78,51 +73,6 @@ public class Property implements Parcelable{
         this.balcony = balcony;
         this.comments = comments;
         this.lastUpdate = lastUpdate;
-    }
-
-    @Ignore
-    public Property(Parcel in){
-        this.id = in.readInt();
-        this.elevator = in.readByte() != 0;
-        this.safeRoom = in.readByte() !=0;
-        this.address = Objects.requireNonNull(in.readString());
-        this.price = Objects.requireNonNull(in.readString());
-        this.numberOfRooms = Objects.requireNonNull(in.readString());
-        this.imageUrl = Objects.requireNonNull(in.readString());
-        this.floor = Objects.requireNonNull(in.readString());
-        this.size = Objects.requireNonNull(in.readString());
-        this.houseType = Objects.requireNonNull(in.readString());
-        this.balcony = Objects.requireNonNull(in.readString());
-        this.comments = in.readArrayList(Comment.class.getClassLoader());
-        this.imagesUrls = in.readArrayList(String.class.getClassLoader());
-        this.lastUpdate = in.readParcelable(Timestamp.class.getClassLoader());
-        this.latitude = in.readDouble();
-        this.longitude = in.readDouble();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeByte((byte)(elevator ? 1 : 0));
-        parcel.writeByte((byte)(safeRoom ? 1 : 0));
-        parcel.writeString(address);
-        parcel.writeString(price);
-        parcel.writeString(numberOfRooms);
-        parcel.writeString(imageUrl);
-        parcel.writeString(floor);
-        parcel.writeString(size);
-        parcel.writeString(houseType);
-        parcel.writeString(balcony);
-        parcel.writeList(comments);
-        parcel.writeList(imagesUrls);
-        parcel.writeParcelable(lastUpdate, i);
-        parcel.writeDouble(latitude);
-        parcel.writeDouble(longitude);
     }
 
     public int getId() {
@@ -290,16 +240,6 @@ public class Property implements Parcelable{
                 ", lastUpdate=" + lastUpdate +
                 '}';
     }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Property createFromParcel(Parcel in) {
-            return new Property(in);
-        }
-
-        public Property[] newArray(int size) {
-            return new Property[size];
-        }
-    };
 
     @Override
     public boolean equals(Object o) {
