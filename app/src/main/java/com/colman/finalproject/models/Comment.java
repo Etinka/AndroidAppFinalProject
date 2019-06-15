@@ -60,7 +60,8 @@ public class Comment{
     }
 
     @Ignore
-    public Comment(@NonNull String id, @NonNull String text, @Nullable String imageUrl, @NonNull String userUid, @NonNull Timestamp date, @NonNull String userName, boolean isActive) {
+    public Comment(@NonNull String id, @NonNull String text, @Nullable String imageUrl,
+                   @NonNull String userUid, @NonNull Timestamp date, @NonNull String userName, boolean isActive) {
         this.id = id;
         this.text = text;
         this.imageUrl = imageUrl;

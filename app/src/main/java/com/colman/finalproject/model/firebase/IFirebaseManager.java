@@ -5,8 +5,6 @@ import androidx.lifecycle.Observer;
 
 import com.colman.finalproject.models.Comment;
 
-import java.util.List;
-
 public interface IFirebaseManager {
 
     boolean isUserLoggedIn();
@@ -25,9 +23,7 @@ public interface IFirebaseManager {
 
     void updatePropertyListener(long from, IFirebaseListener listener);
 
-    void observeCommentsLiveData(LifecycleOwner lifecycleOwner, Observer<List<Comment>> observer);
-
-    void getCommentsForProperty(int propertyId);
+    void getCommentsForProperty(int propertyId, IFirebaseListener listener);
 
     void addComment(Comment comment);
 

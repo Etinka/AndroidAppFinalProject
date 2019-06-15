@@ -14,16 +14,13 @@ public class PropertyRepository {
 
     private PropertyDao mPropertyDao;
     private CommentDao mCommentDao;
-    private LiveData<Property> mProperty;
     private LiveData<List<Property>> mAllProperties;
-    private LiveData<List<Comment>> mAllComments;
 
     public PropertyRepository(Application application) {
         PropertyRoomDatabase db = PropertyRoomDatabase.getDatabase(application);
         mPropertyDao = db.propertyDao();
         mCommentDao = db.commentsDao();
         mAllProperties = mPropertyDao.getAllProperty();
-        mAllComments = mCommentDao.getAllComments();
     }
 
     public LiveData<List<Property>> getAllProperties() {
@@ -31,12 +28,11 @@ public class PropertyRepository {
     }
 
     public LiveData<Property> getPropertyById(int propertyId){
-        mProperty = mPropertyDao.getPropertyById(propertyId);
-        return mProperty;
+        return mPropertyDao.getPropertyById(propertyId);
     }
 
-    public LiveData<List<Comment>> getAllComment() {
-        return mAllComments;
+    public LiveData<List<Comment>> getCommentByPropertyId(int propertyId){
+        return mCommentDao.getAllCommentsByProperyId(propertyId);
     }
 
     public void insert(Property property) {
