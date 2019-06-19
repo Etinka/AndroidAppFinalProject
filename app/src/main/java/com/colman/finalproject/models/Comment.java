@@ -10,14 +10,14 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.colman.finalproject.room.Converters;
+import com.colman.finalproject.room.TimestampConverters;
 import com.google.firebase.Timestamp;
 
 import java.util.Objects;
 
 @SuppressWarnings({"unused", "NullableProblems"})
 @Entity(tableName = "comment_table")
-@TypeConverters({Converters.class})
+@TypeConverters({TimestampConverters.class})
 public class Comment{
     @PrimaryKey
     @NonNull

@@ -18,6 +18,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FirebaseManager implements IFirebaseManager {
     public static String EMPTY_USER_NAME = "משתמש";
@@ -177,7 +178,7 @@ public class FirebaseManager implements IFirebaseManager {
 
                 properties = snapshot.toObjects(Property.class);
                 for (int i = 0; i < properties.size(); i++) {
-                    properties.get(i).setImages(((List<String>) snapshot.getDocuments().get(i).get("imagesUrls")));
+                    properties.get(i).setImages(((ArrayList<String>) Objects.requireNonNull(snapshot.getDocuments().get(i).get("imagesUrls"))));
                 }
 
                 listener.updatedProperties(properties);

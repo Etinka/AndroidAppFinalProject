@@ -8,7 +8,8 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.colman.finalproject.room.Converters;
+import com.colman.finalproject.room.ListConverters;
+import com.colman.finalproject.room.TimestampConverters;
 import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.Objects;
 
 @SuppressWarnings({"unused", "NullableProblems"})
 @Entity(tableName = "property_table")
-@TypeConverters({Converters.class})
+@TypeConverters({TimestampConverters.class, ListConverters.class})
 public class Property{
     @PrimaryKey
     @NonNull
@@ -45,9 +46,8 @@ public class Property{
     @NonNull
     @Ignore
     private List<Comment> comments;
-    @NonNull
-    @Ignore
-    private List<String> imagesUrls = new ArrayList<>();
+    @Nullable
+    private ArrayList<String> imagesUrls = new ArrayList<>();
     @Nullable
     private Timestamp lastUpdate;
     @NonNull
@@ -187,9 +187,18 @@ public class Property{
         this.longitude = longitude;
     }
 
+    public void setImagesUrls(@Nullable ArrayList<String> imagesUrls) {
+        this.imagesUrls = imagesUrls;
+    }
+
     @NonNull
     public List<Comment> getComments() {
         return comments;
+    }
+
+    @Nullable
+    public ArrayList<String> getImagesUrls() {
+        return imagesUrls;
     }
 
     @NonNull
@@ -206,12 +215,12 @@ public class Property{
         this.comments = comments;
     }
 
-    @NonNull
+    @Nullable
     public List<String> getImages() {
         return imagesUrls;
     }
 
-    public void setImages(@NonNull List<String> images) {
+    public void setImages(@NonNull ArrayList<String> images) {
         this.imagesUrls = images;
     }
 
