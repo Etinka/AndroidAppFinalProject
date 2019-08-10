@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.EditText;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.transition.AutoTransition;
+import androidx.transition.TransitionManager;
+
 import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseActivity;
 import com.colman.finalproject.register.RegisterActivity;
@@ -13,11 +18,6 @@ import com.colman.finalproject.tabs.MainActivity;
 import com.colman.finalproject.utils.UIUtils;
 import com.colman.finalproject.view.LoaderButton;
 import com.google.android.material.snackbar.Snackbar;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.transition.AutoTransition;
-import androidx.transition.TransitionManager;
 
 //TODO add error handling and edit text verification + loading and disabling buttons
 //and move logic to view model
@@ -72,6 +72,7 @@ public class LoginActivity extends GagBaseActivity {
             if (isSignedIn != null) {
                 if (isSignedIn) {
                     MainActivity.launch(this);
+                    finish();
                 } else {
                     mLoginBtn.handleLoadingStatus(false);
                     UIUtils.showSnackbar(this, mConstraintLayout, "שם משתמש או סיסמה שגויים", Snackbar.LENGTH_LONG);
