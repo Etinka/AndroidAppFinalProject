@@ -33,7 +33,7 @@ public class FirebaseManager implements IFirebaseManager {
     private ListenerRegistration listenerRegistration;
 
     private FirebaseManager() {
-
+        mAuth.addAuthStateListener(firebaseAuth -> mSignedInLiveData.postValue(isUserLoggedIn()));
     }
 
     public static FirebaseManager getInstance() {

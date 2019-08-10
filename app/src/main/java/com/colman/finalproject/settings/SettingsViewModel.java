@@ -16,6 +16,7 @@ public class SettingsViewModel extends GagBaseViewModel {
     private MutableLiveData<UserInfo> mInfoLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mLoadingLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mEnableButtonLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mMoveToLogin = new MutableLiveData<>();
     private MutableLiveData<String> mShowSnackbarLiveData = new MutableLiveData<>();
     private UserInfo mUserInfo = new UserInfo();
 
@@ -42,18 +43,30 @@ public class SettingsViewModel extends GagBaseViewModel {
         mShowSnackbarLiveData.observe(lifecycleOwner, observer);
     }
 
+    void observeMoveToLoginLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer) {
+        mMoveToLogin.observe(lifecycleOwner, observer);
+
+        mModel.observeSignedInLiveData(lifecycleOwner, isLoggedIn -> {
+            if (!isLoggedIn) {
+                mMoveToLogin.postValue(true);
+            }
+        });
+    }
+
     void updateUserDetails(String userName) {
         mLoadingLiveData.postValue(true);
         mModel.updateUserDetails(userName.trim());
-        mLoadingLiveData.postValue(false);
+        mUserInfo.setName(userName.trim());
         mShowSnackbarLiveData.postValue(getApplication().getString(R.string.user_name_updated));
+        mEnableButtonLiveData.postValue(false);
+        mLoadingLiveData.postValue(false);
     }
 
     void afterUserNameTextChanged(Editable s) {
         mEnableButtonLiveData.postValue(!s.toString().trim().equals(mUserInfo.getName()));
     }
 
-    void logOut(){
+    void logOut() {
         mModel.logout();
     }
 }
