@@ -33,8 +33,6 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     private TextView mElevator;
     private TextView mSafeRoom;
 
-    private PropertyDetailsViewModel mViewModel;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,12 +48,12 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = ViewModelProviders.of(this).get(PropertyDetailsViewModel.class);
+        PropertyDetailsViewModel viewModel = ViewModelProviders.of(this).get(PropertyDetailsViewModel.class);
 
         int propertyId = (getArguments() != null) ?
                 PropertyDetailsFragmentArgs.fromBundle(getArguments()).getPropertyId() : 0;
 
-        mViewModel.setPropertyId(propertyId, getViewLifecycleOwner(), property -> {
+        viewModel.setPropertyId(propertyId, getViewLifecycleOwner(), property -> {
             if (property != null) {
                 fillPropertyData(property);
             }
@@ -88,7 +86,6 @@ public class PropertyDetailsFragment extends GagBaseFragment {
                 getString(R.string.available) : getString(R.string.unavailable)));
         mSafeRoom.setText(getString(R.string.safe_room, property.isSafeRoom() ?
                 getString(R.string.available) : getString(R.string.unavailable)));
-
 
         mImagePager.setAdapter(new PropertyImagesAdapter(
                 getContext(),
