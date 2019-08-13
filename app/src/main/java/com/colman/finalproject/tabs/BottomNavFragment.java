@@ -7,15 +7,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.colman.finalproject.R;
+import com.colman.finalproject.bases.GagBaseFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class BottomNavFragment extends Fragment {
+public class BottomNavFragment extends GagBaseFragment {
     private BottomNavigationView bottomNavigation;
 
     @Override
@@ -31,5 +31,11 @@ public class BottomNavFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         NavController navController = Navigation.findNavController(requireActivity(), R.id.bottomNavFragment);
         NavigationUI.setupWithNavController(bottomNavigation, navController);
+
+        mModel.observeSignedInLiveData(getViewLifecycleOwner(), isLoggedIn -> {
+            if (!isLoggedIn) {
+                Navigation.findNavController(requireView()).navigate(BottomNavFragmentDirections.actionBottomNavFragmentToSignInFragment());
+            }
+        });
     }
 }

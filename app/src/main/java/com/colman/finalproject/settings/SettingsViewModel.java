@@ -16,7 +16,6 @@ public class SettingsViewModel extends GagBaseViewModel {
     private MutableLiveData<UserInfo> mInfoLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mLoadingLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mEnableButtonLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> mMoveToLogin = new MutableLiveData<>();
     private MutableLiveData<String> mShowSnackbarLiveData = new MutableLiveData<>();
     private UserInfo mUserInfo = new UserInfo();
 
@@ -41,16 +40,6 @@ public class SettingsViewModel extends GagBaseViewModel {
 
     void observeSnackbarLiveData(LifecycleOwner lifecycleOwner, Observer<String> observer) {
         mShowSnackbarLiveData.observe(lifecycleOwner, observer);
-    }
-
-    void observeMoveToLoginLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer) {
-        mMoveToLogin.observe(lifecycleOwner, observer);
-
-        mModel.observeSignedInLiveData(lifecycleOwner, isLoggedIn -> {
-            if (!isLoggedIn) {
-                mMoveToLogin.postValue(true);
-            }
-        });
     }
 
     void updateUserDetails(String userName) {

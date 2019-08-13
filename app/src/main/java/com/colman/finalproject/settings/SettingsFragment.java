@@ -14,12 +14,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseFragment;
-import com.colman.finalproject.login.LoginActivity;
 import com.colman.finalproject.utils.UIUtils;
 import com.colman.finalproject.view.LoaderButton;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.Objects;
 
 public class SettingsFragment extends GagBaseFragment {
 
@@ -81,13 +78,6 @@ public class SettingsFragment extends GagBaseFragment {
 
         mViewModel.observeSnackbarLiveData(getViewLifecycleOwner(),
                 message -> UIUtils.showSnackbar(requireContext(), requireView(), message, Snackbar.LENGTH_SHORT));
-
-        mViewModel.observeMoveToLoginLiveData(getViewLifecycleOwner(), show -> {
-            if(show) {
-                LoginActivity.launch(Objects.requireNonNull(getActivity()));
-                getActivity().finish();
-            }
-        });
 
         mViewModel.observeInfoLiveData(getViewLifecycleOwner(), userInfo -> {
             mUserName.setText(userInfo.getName());

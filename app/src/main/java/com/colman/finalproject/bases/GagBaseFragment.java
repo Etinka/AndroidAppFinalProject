@@ -4,6 +4,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.fragment.app.Fragment;
 
+import com.colman.finalproject.model.Model;
 import com.colman.finalproject.utils.Logger;
 
 import java.util.Objects;
@@ -12,6 +13,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class GagBaseFragment extends Fragment {
     protected Logger logger = new Logger(this.getClass().getSimpleName());
+    protected Model mModel = Model.getInstance();
 
     protected void hideSoftKeyBoard() {
         InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(INPUT_METHOD_SERVICE);
