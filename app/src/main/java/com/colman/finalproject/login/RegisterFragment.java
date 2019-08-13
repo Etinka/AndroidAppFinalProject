@@ -1,25 +1,25 @@
-package com.colman.finalproject.register;
+package com.colman.finalproject.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
+
 import com.colman.finalproject.R;
-import com.colman.finalproject.bases.GagBaseActivity;
-import com.colman.finalproject.tabs.MainActivity;
+import com.colman.finalproject.bases.GagBaseFragment;
 import com.colman.finalproject.utils.UIUtils;
 import com.colman.finalproject.view.LoaderButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.regex.Pattern;
 
-import androidx.annotation.Nullable;
-
-public class RegisterActivity extends GagBaseActivity {
-
+public class RegisterFragment extends GagBaseFragment {
     private EditText mUserName;
     private EditText mEmail;
     private EditText mPassword;
@@ -29,19 +29,27 @@ public class RegisterActivity extends GagBaseActivity {
     private View mPasswordErrorMsg;
     private LoaderButton mRegisterBtn;
 
+    public RegisterFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+    }
 
-        mEmail = findViewById(R.id.email);
-        mUserName = findViewById(R.id.user_name);
-        mPassword = findViewById(R.id.password);
-        mPasswordValidator = findViewById(R.id.passwordValidator);
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_register, container, false);
+        mEmail = view.findViewById(R.id.email);
+        mUserName = view.findViewById(R.id.user_name);
+        mPassword = view.findViewById(R.id.password);
+        mPasswordValidator = view.findViewById(R.id.passwordValidator);
 
-        mEmailErrorMsg = findViewById(R.id.email_error_msg);
-        mPasswordErrorMsg = findViewById(R.id.password_error_msg);
-        mRegisterBtn = findViewById(R.id.register_btn);
+        mEmailErrorMsg = view.findViewById(R.id.email_error_msg);
+        mPasswordErrorMsg = view.findViewById(R.id.password_error_msg);
+        mRegisterBtn = view.findViewById(R.id.register_btn);
 
         mEmail.setOnFocusChangeListener(this::updateEmailErrorMsg);
 
@@ -49,7 +57,7 @@ public class RegisterActivity extends GagBaseActivity {
 
         mPassword.setOnFocusChangeListener(this::updatePasswordErrorMsg);
 
-        mRegisterBtn.setOnClickListener(view -> {
+        mRegisterBtn.setOnClickListener(button -> {
             if (!isValidEmail()) {
                 mEmailErrorMsg.setVisibility(View.VISIBLE);
             }
@@ -61,11 +69,9 @@ public class RegisterActivity extends GagBaseActivity {
                 mModel.observeSignedInLiveData(this, isSuccessful -> {
                     mRegisterBtn.handleLoadingStatus(false);
                     if (isSuccessful != null && isSuccessful) {
-                        Intent intent = new Intent(this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        Navigation.findNavController(view).navigate(RegisterFragmentDirections.actionRegisterFragmentToBottomNavFragment());
                     } else {
-                        UIUtils.showSnackbar(this, mEmail, R.color.colorPrimary, "Email already exists", Snackbar.LENGTH_LONG);
+                        UIUtils.showSnackbar(requireContext(), mEmail, R.color.colorPrimary, "Email already exists", Snackbar.LENGTH_LONG);
                     }
                 });
 
@@ -73,6 +79,7 @@ public class RegisterActivity extends GagBaseActivity {
             }
         });
 
+        return view;
     }
 
     private boolean isValidEmail() {

@@ -35,23 +35,16 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".login.SplashActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleInstance"
-            android:theme="@style/SplashTheme">
+            android:name=".tabs.MainActivity"
+            android:launchMode="singleTop"
+            android:label="@string/app_name" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.LoginActivity" />
-        <activity
-            android:name=".tabs.MainActivity"
-            android:launchMode="singleTop"
-            android:label="@string/app_name" />
-
-        <activity android:name=".register.RegisterActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
