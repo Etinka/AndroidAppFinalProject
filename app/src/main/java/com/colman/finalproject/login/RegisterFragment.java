@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.colman.finalproject.R;
@@ -29,6 +30,8 @@ public class RegisterFragment extends GagBaseFragment {
     private View mPasswordErrorMsg;
     private LoaderButton mRegisterBtn;
 
+    private RegisterViewModel mViewModel;
+
     public RegisterFragment() {
         // Required empty public constructor
     }
@@ -42,6 +45,14 @@ public class RegisterFragment extends GagBaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
+        mViewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
+
+        initViews(view);
+        registerObservers();
+        return view;
+    }
+
+    private void initViews(@NonNull View view) {
         mEmail = view.findViewById(R.id.email);
         mUserName = view.findViewById(R.id.user_name);
         mPassword = view.findViewById(R.id.password);
@@ -51,6 +62,11 @@ public class RegisterFragment extends GagBaseFragment {
         mPasswordErrorMsg = view.findViewById(R.id.password_error_msg);
         mRegisterBtn = view.findViewById(R.id.register_btn);
 
+
+    }
+
+    private void registerObservers() {
+
         mEmail.setOnFocusChangeListener(this::updateEmailErrorMsg);
 
         mPasswordValidator.setOnFocusChangeListener(this::updatePasswordErrorMsg);
@@ -58,6 +74,7 @@ public class RegisterFragment extends GagBaseFragment {
         mPassword.setOnFocusChangeListener(this::updatePasswordErrorMsg);
 
         mRegisterBtn.setOnClickListener(button -> {
+            mViewModel.clickedRegister(mEmail.getText().toString(), mPassword.getText().toString(), mUserName.getText().toString());
             if (!isValidEmail()) {
                 mEmailErrorMsg.setVisibility(View.VISIBLE);
             }
@@ -69,18 +86,19 @@ public class RegisterFragment extends GagBaseFragment {
                 mModel.observeSignedInLiveData(this, isSuccessful -> {
                     mRegisterBtn.handleLoadingStatus(false);
                     if (isSuccessful != null && isSuccessful) {
-                        Navigation.findNavController(view).navigate(RegisterFragmentDirections.actionRegisterFragmentToBottomNavFragment());
+                        Navigation.findNavController(requireView()).navigate(RegisterFragmentDirections.actionRegisterFragmentToBottomNavFragment());
                     } else {
                         UIUtils.showSnackbar(requireContext(), mEmail, R.color.colorPrimary, "Email already exists", Snackbar.LENGTH_LONG);
                     }
                 });
 
-                mModel.registerUser(mEmail.getText().toString(), mPassword.getText().toString(), mUserName.getText().toString());
+//                mModel.registerUser());
             }
         });
+        mViewModel.init(getViewLifecycleOwner());
 
-        return view;
     }
+
 
     private boolean isValidEmail() {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
