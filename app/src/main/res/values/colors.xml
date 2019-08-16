@@ -6,4 +6,5 @@
     <color name="item_background">#CCFFFFFF</color>
     <color name="separator">#A2439A</color>
     <color name="red">#ffcc0000</color>
+    <color name="add_image">#808080</color>
 </resources>

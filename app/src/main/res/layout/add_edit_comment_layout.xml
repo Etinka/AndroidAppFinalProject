@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/property_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/app_medium_size_margin"
+        android:text="Address 6 City"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/price_text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_margin="8dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/property_address" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/comment_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/colorPrimary"
+        android:gravity="start|top"
+        android:hint="@string/comment_hint"
+        android:minLines="8"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/separator" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/add_image"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:background="@drawable/add_image"
+        android:padding="24dp"
+        app:layout_constraintStart_toStartOf="@id/comment_content"
+        app:layout_constraintTop_toBottomOf="@id/comment_content"
+        app:srcCompat="@drawable/ic_add_image" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/existing_images"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/add_image"
+        app:layout_constraintStart_toEndOf="@id/add_image"
+        app:layout_constraintTop_toBottomOf="@id/comment_content" />
+
+    <com.colman.finalproject.view.LoaderButton
+        android:id="@+id/add_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:ctext="@string/send"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_image" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

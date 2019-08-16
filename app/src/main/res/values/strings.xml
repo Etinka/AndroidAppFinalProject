@@ -27,5 +27,8 @@
     <string name="user_name_hint">שם משתמש</string>
     <string name="invalid_email_address">Invalid email address</string>
     <string name="passwords_does_not_match">Passwords does not match</string>
+    <string name="comment_hint">Your Comment</string>
+    <string name="send">Send</string>
+    <string name="add_comment">Add Comment</string>
 
 </resources>

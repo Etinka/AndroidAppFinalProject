@@ -40,6 +40,25 @@
             android:name="propertyId"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_property_details_fragment_to_add_comment_fragment"
+            app:destination="@+id/add_comment_fragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/property_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_comment_fragment"
+        android:name="com.colman.finalproject.properties.AddEditCommentFragment"
+        android:label="add_comment_fragment"
+        tools:layout="@layout/add_edit_comment_layout">
+        <argument
+            android:name="propertyId"
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

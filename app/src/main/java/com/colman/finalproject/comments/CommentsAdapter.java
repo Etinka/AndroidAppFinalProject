@@ -1,6 +1,8 @@
 package com.colman.finalproject.comments;
 
 import android.content.Context;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,24 +10,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.colman.finalproject.R;
+import com.colman.finalproject.model.firebase.FirebaseManager;
 import com.colman.finalproject.models.Comment;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.CommentViewHolder> {
 
     private LayoutInflater inflater;
-    private Context context;
     private List<Comment> comments;
+    private String userId;
 
-    CommentsAdapter(Context context, List<Comment> comments) {
+    public CommentsAdapter(Context context, List<Comment> comments) {
         this.inflater = LayoutInflater.from(context);
         this.comments = comments;
-        this.context = context;
+        userId = FirebaseManager.getInstance().getUserUid();
+        Log.e(TAG, "CommentsAdapter: " + userId );
     }
 
     @NonNull
@@ -36,15 +43,24 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentViewHolder commentViewHolder, int i) {
-        commentViewHolder.writerName.setText(comments.get(i).getUserName());
-        commentViewHolder.commentDate.setText(comments.get(i).getDate().toString());
-        commentViewHolder.commentData.setText(comments.get(i).getText());
+    public void onBindViewHolder(@NonNull CommentViewHolder commentViewHolder, int position) {
+        Comment comment = comments.get(position);
+        commentViewHolder.writerName.setText(comment.getUserName());
+        commentViewHolder.commentDate.setText(DateUtils.getRelativeTimeSpanString(comment.getDate().toDate().getTime()));
+        commentViewHolder.commentContent.setText(comment.getText());
 
         Picasso.get()
-                .load(comments.get(i).getImageUrl())
+                .load(comment.getImageUrl())
                 .into(commentViewHolder.commentImage);
 
+        if(comment.getUserUid().equals(userId)) {
+            commentViewHolder.editButton.setVisibility(View.VISIBLE);
+            commentViewHolder.editButton.setOnClickListener(view -> {
+
+            });
+        } else {
+            commentViewHolder.editButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -57,16 +73,16 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         ImageView commentImage;
         TextView writerName;
         TextView commentDate;
-        TextView commentData;
+        TextView commentContent;
+        AppCompatImageView editButton;
 
-        public CommentViewHolder(@NonNull View itemView) {
+        CommentViewHolder(@NonNull View itemView) {
             super(itemView);
-
             commentImage = itemView.findViewById(R.id.comment_image);
             writerName = itemView.findViewById(R.id.writer_name);
             commentDate = itemView.findViewById(R.id.comment_date);
-            commentData = itemView.findViewById(R.id.comment);
-
+            commentContent = itemView.findViewById(R.id.comment);
+            editButton = itemView.findViewById(R.id.edit_button);
         }
     }
 }
