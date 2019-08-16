@@ -40,7 +40,7 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     private RecyclerView commentsList;
     private LoaderButton addCommentButton;
 
-    private PropertyDetailsViewModel mViewModel;
+    private PropertyDetailsViewModel viewModel;
     private CommentsAdapter commentsAdapter;
     private int propertyId;
 
@@ -59,12 +59,12 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = ViewModelProviders.of(this).get(PropertyDetailsViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(PropertyDetailsViewModel.class);
 
         propertyId = (getArguments() != null) ?
                 PropertyDetailsFragmentArgs.fromBundle(getArguments()).getPropertyId() : 0;
 
-        mViewModel.setPropertyId(propertyId, getViewLifecycleOwner(), property -> {
+        viewModel.setPropertyId(propertyId, getViewLifecycleOwner(), property -> {
             if (property != null) {
                 fillPropertyData(property);
             }

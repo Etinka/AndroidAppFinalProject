@@ -45,15 +45,17 @@ public class SettingsViewModel extends GagBaseViewModel {
     void updateUserDetails(String userName) {
         mLoadingLiveData.postValue(true);
         mModel.updateUserDetails(userName.trim());
-        mLoadingLiveData.postValue(false);
+        mUserInfo.setName(userName.trim());
         mShowSnackbarLiveData.postValue(getApplication().getString(R.string.user_name_updated));
+        mEnableButtonLiveData.postValue(false);
+        mLoadingLiveData.postValue(false);
     }
 
     void afterUserNameTextChanged(Editable s) {
         mEnableButtonLiveData.postValue(!s.toString().trim().equals(mUserInfo.getName()));
     }
 
-    void logOut(){
+    void logOut() {
         mModel.logout();
     }
 }

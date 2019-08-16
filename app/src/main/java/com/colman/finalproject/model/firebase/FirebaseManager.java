@@ -8,6 +8,7 @@ import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
 import com.colman.finalproject.utils.DateTimeUtils;
 import com.colman.finalproject.utils.Logger;
+import com.colman.finalproject.utils.SingleLiveEvent;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -29,11 +30,12 @@ public class FirebaseManager implements IFirebaseManager {
     private FirebaseFirestore mDb = FirebaseFirestore.getInstance();
     private CollectionReference mPropertiesCollectionRef = mDb.collection("properties");
     private CollectionReference mCommentsCollectionRef = mDb.collection("comments");
-    private MutableLiveData<Boolean> mSignedInLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mAuthStateLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mSignedInLiveData = new SingleLiveEvent<>();
     private ListenerRegistration listenerRegistration;
 
     private FirebaseManager() {
-
+        mAuth.addAuthStateListener(firebaseAuth -> mAuthStateLiveData.postValue(isUserLoggedIn()));
     }
 
     public static FirebaseManager getInstance() {
@@ -113,6 +115,11 @@ public class FirebaseManager implements IFirebaseManager {
     @Override
     public void observeSignedInLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer) {
         mSignedInLiveData.observe(lifecycleOwner, observer);
+    }
+
+    @Override
+    public void observeAuthStateLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer) {
+        mAuthStateLiveData.observe(lifecycleOwner, observer);
     }
 
     //Properties

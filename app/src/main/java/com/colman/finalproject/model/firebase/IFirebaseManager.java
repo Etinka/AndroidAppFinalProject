@@ -25,6 +25,8 @@ public interface IFirebaseManager {
 
     void observeSignedInLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer);
 
+    void observeAuthStateLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer);
+
     void getAllProperties(long from, IFirebaseListener listener);
 
     void updatePropertyListener(long from, IFirebaseListener listener);

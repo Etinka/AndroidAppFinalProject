@@ -25,10 +25,13 @@
     <string name="user_name_updated">שם המשתמש עודכן בהצלחה</string>
     <string name="update_info_title">עדכון פרטי משתמש</string>
     <string name="user_name_hint">שם משתמש</string>
-    <string name="invalid_email_address">Invalid email address</string>
-    <string name="passwords_does_not_match">Passwords does not match</string>
+    <string name="invalid_email_address">כתובת אימייל לא תקינה</string>
+    <string name="passwords_does_not_match">הסיסמאות אינן זהות</string>
+    <string name="register_title">הרשמה</string>
+    <string name="repassword">הכנס סיסמה שנית</string>
+
+    <!--TODO translate to hebrew-->
     <string name="comment_hint">Your Comment</string>
     <string name="send">Send</string>
     <string name="add_comment">Add Comment</string>
-
 </resources>
