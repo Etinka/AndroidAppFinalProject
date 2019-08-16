@@ -140,6 +140,10 @@ public class Model {
         mFirebaseManager.deleteComment(comment);
     }
 
+    public void updateComment(Comment comment) {
+        mFirebaseManager.updateComment(comment);
+    }
+
     private void getCommentsForProperty(int propertyId) {
         mFirebaseManager.getCommentsForProperty(propertyId, firebaseListener);
     }

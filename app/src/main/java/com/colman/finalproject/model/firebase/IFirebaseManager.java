@@ -37,5 +37,7 @@ public interface IFirebaseManager {
 
     void deleteComment(Comment comment);
 
+    void updateComment(Comment comment);
+
 }
 

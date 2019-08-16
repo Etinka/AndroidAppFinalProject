@@ -1,6 +1,7 @@
 package com.colman.finalproject.comments;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,12 +13,14 @@ import android.widget.TextView;
 import com.colman.finalproject.R;
 import com.colman.finalproject.model.firebase.FirebaseManager;
 import com.colman.finalproject.models.Comment;
+import com.colman.finalproject.properties.PropertyDetailsFragmentDirections;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -32,7 +35,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         this.inflater = LayoutInflater.from(context);
         this.comments = comments;
         userId = FirebaseManager.getInstance().getUserUid();
-        Log.e(TAG, "CommentsAdapter: " + userId );
+        Log.e(TAG, "CommentsAdapter: " + userId);
     }
 
     @NonNull
@@ -49,14 +52,21 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         commentViewHolder.commentDate.setText(DateUtils.getRelativeTimeSpanString(comment.getDate().toDate().getTime()));
         commentViewHolder.commentContent.setText(comment.getText());
 
-        Picasso.get()
-                .load(comment.getImageUrl())
-                .into(commentViewHolder.commentImage);
+        if (!TextUtils.isEmpty(comment.getImageUrl())) {
+            Picasso.get()
+                    .load(comment.getImageUrl())
+                    .into(commentViewHolder.commentImage);
+        }
 
-        if(comment.getUserUid().equals(userId)) {
+        if (comment.getUserUid().equals(userId)) {
             commentViewHolder.editButton.setVisibility(View.VISIBLE);
             commentViewHolder.editButton.setOnClickListener(view -> {
-
+                PropertyDetailsFragmentDirections.ActionPropertyDetailsFragmentToAddCommentFragment direction =
+                        PropertyDetailsFragmentDirections
+                                .actionPropertyDetailsFragmentToAddCommentFragment()
+                                .setPropertyId(comment.getPropertyId())
+                                .setCommentId(comment.getId());
+                Navigation.findNavController(commentViewHolder.itemView).navigate(direction);
             });
         } else {
             commentViewHolder.editButton.setVisibility(View.GONE);

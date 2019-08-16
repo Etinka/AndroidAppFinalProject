@@ -42,6 +42,12 @@ public class PropertyDetailsViewModel extends GagBaseViewModel {
                 new Comment(comment, imageUrl, mModel.getUserUid(), Timestamp.now(), mModel.getUserName(), true, mProperty.getId()));
     }
 
+    void updateComment(@NonNull Comment comment) {
+        if(comment.getUserUid().equals(mModel.getUserUid())) {
+            mModel.updateComment(comment);
+        }
+    }
+
     void deleteComment(@NonNull Comment comment) {
         if(comment.getUserUid().equals(mModel.getUserUid())) {
             mModel.deleteComment(comment);

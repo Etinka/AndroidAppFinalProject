@@ -59,6 +59,10 @@
             android:name="propertyId"
             android:defaultValue="0"
             app:argType="integer" />
+        <argument
+            android:name="commentId"
+            android:defaultValue="0"
+            app:argType="string" />
     </fragment>
 
 </navigation>

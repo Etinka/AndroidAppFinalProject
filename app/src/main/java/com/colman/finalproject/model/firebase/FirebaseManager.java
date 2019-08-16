@@ -155,6 +155,11 @@ public class FirebaseManager implements IFirebaseManager {
     }
 
     @Override
+    public void updateComment(Comment comment) {
+        mCommentsCollectionRef.document(comment.getId()).set(comment);
+    }
+
+    @Override
     public void getAllProperties(long from, IFirebaseListener listener) {
         if (from <= 0) {
             getAllProperties(DateTimeUtils.getTimeStamp(2018, 1, 1), listener);
