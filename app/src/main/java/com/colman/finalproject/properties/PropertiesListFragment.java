@@ -22,6 +22,7 @@ import java.util.Objects;
 public class PropertiesListFragment extends GagBaseFragment {
 
     // View
+    private View mRootView;
     private RecyclerView mPropertiesRecyclerView;
     private PropertiesAdapter mAdapter;
 
@@ -31,9 +32,11 @@ public class PropertiesListFragment extends GagBaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.properties_list_fragment, container, false);
-        mPropertiesRecyclerView = rootView.findViewById(R.id.properties_list);
-        return rootView;
+        if (mRootView == null) {
+            mRootView = inflater.inflate(R.layout.properties_list_fragment, container, false);
+            mPropertiesRecyclerView = mRootView.findViewById(R.id.properties_list);
+        }
+        return mRootView;
     }
 
     @Override

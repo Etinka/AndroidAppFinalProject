@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -63,7 +64,7 @@ public class MapFragment extends GagBaseFragment implements OnMapReadyCallback, 
                             new MarkerOptions()
                                     .position(new LatLng(property.getLatitude(), property.getLongitude()))
                                     .title(property.getAddress())
-                    );
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                     marker.setTag(property.getId());
                     if (property.getLatitude() > maxLat) {
                         maxLat = property.getLatitude();
