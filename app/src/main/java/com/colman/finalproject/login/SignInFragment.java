@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
@@ -27,6 +28,7 @@ public class SignInFragment extends GagBaseFragment {
     private EditText mEmailTV, mPasswordTV;
     private ConstraintLayout mConstraintLayout;
     private LoaderButton mLoginBtn;
+    private LoginViewModel mViewModel;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -47,8 +49,11 @@ public class SignInFragment extends GagBaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+
         constraintSet2.clone(requireContext(), R.layout.fragment_sign_in_final); // get constraints from layout
         initViews(view);
+        registerObservers(view);
         constraintSet1.clone(mConstraintLayout); // get constraints from ConstraintSet
 
         Handler handler = new Handler();
@@ -65,25 +70,34 @@ public class SignInFragment extends GagBaseFragment {
         mEmailTV = view.findViewById(R.id.emailTV);
         mPasswordTV = view.findViewById(R.id.passwordTV);
         mLoginBtn = view.findViewById(R.id.loginBtn);
+    }
 
+    private void registerObservers(View view) {
         mLoginBtn.setOnClickListener(v -> {
             hideSoftKeyBoard();
-
-            mLoginBtn.handleLoadingStatus(true);
-            mModel.signInUser(mEmailTV.getText().toString(), mPasswordTV.getText().toString());
+            mViewModel.clickedLogin(mEmailTV.getText().toString(), mPasswordTV.getText().toString());
         });
 
-        view.findViewById(R.id.registerBtn).setOnClickListener(v -> Navigation.findNavController(view).navigate(SignInFragmentDirections.actionSignInFragmentToRegisterFragment()));
+        view.findViewById(R.id.registerBtn).setOnClickListener(v -> mViewModel.clickedRegister());
 
-        mModel.observeSignedInLiveData(this, isSignedIn -> {
+        mViewModel.observeLoggedInLiveData(getViewLifecycleOwner(), isSignedIn -> {
             if (isSignedIn != null) {
                 if (isSignedIn) {
                     Navigation.findNavController(view).navigate(SignInFragmentDirections.actionSignInFragmentToBottomNavFragment());
                 } else {
-                    mLoginBtn.handleLoadingStatus(false);
                     UIUtils.showSnackbar(requireContext(), mConstraintLayout, "שם משתמש או סיסמה שגויים", Snackbar.LENGTH_LONG);
                 }
             }
         });
+
+        mViewModel.observeLoadingLiveData(getViewLifecycleOwner(), isLoading -> mLoginBtn.handleLoadingStatus(isLoading));
+
+        mViewModel.observeMoveToRegisterLiveData(getViewLifecycleOwner(), show -> {
+            if (show) {
+                Navigation.findNavController(view).navigate(SignInFragmentDirections.actionSignInFragmentToRegisterFragment());
+            }
+        });
+
+        mViewModel.init(getViewLifecycleOwner());
     }
 }

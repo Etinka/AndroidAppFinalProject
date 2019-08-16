@@ -119,6 +119,10 @@ public class Model {
         mFirebaseManager.observeSignedInLiveData(lifecycleOwner, observer);
     }
 
+    public void observeAuthStateLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer) {
+        mFirebaseManager.observeAuthStateLiveData(lifecycleOwner, observer);
+    }
+
     public void observePropertiesLiveData(LifecycleOwner lifecycleOwner, Observer<List<Property>> observer) {
         mRepository.getAllProperties().observe(lifecycleOwner, observer);
     }

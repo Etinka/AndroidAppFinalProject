@@ -32,7 +32,7 @@ public class BottomNavFragment extends GagBaseFragment {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.bottomNavFragment);
         NavigationUI.setupWithNavController(bottomNavigation, navController);
 
-        mModel.observeSignedInLiveData(getViewLifecycleOwner(), isLoggedIn -> {
+        mModel.observeAuthStateLiveData(getViewLifecycleOwner(), isLoggedIn -> {
             if (!isLoggedIn) {
                 Navigation.findNavController(requireView()).navigate(BottomNavFragmentDirections.actionBottomNavFragmentToSignInFragment());
             }
