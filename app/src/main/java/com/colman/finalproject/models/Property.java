@@ -45,7 +45,7 @@ public class Property{
     private String balcony = "";
     @NonNull
     @Ignore
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
     @Nullable
     private ArrayList<String> imagesUrls = new ArrayList<>();
     @Nullable

@@ -3,12 +3,16 @@ package com.colman.finalproject.comments;
 import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.colman.finalproject.R;
 import com.colman.finalproject.model.firebase.FirebaseManager;
@@ -16,26 +20,23 @@ import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.properties.PropertyDetailsFragmentDirections;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.CommentViewHolder> {
 
     private LayoutInflater inflater;
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
     private String userId;
 
-    public CommentsAdapter(Context context, List<Comment> comments) {
+    public CommentsAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
-        this.comments = comments;
         userId = FirebaseManager.getInstance().getUserUid();
-        Log.e(TAG, "CommentsAdapter: " + userId);
+    }
+
+    public void updateComments(List<Comment> comments) {
+        this.comments = comments;
+        notifyDataSetChanged();
     }
 
     @NonNull

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
+import com.colman.finalproject.models.PropertyAndComments;
 
 import java.util.List;
 
@@ -27,8 +28,8 @@ public class PropertyRepository {
         return mAllProperties;
     }
 
-    public LiveData<Property> getPropertyById(int propertyId){
-        return mPropertyDao.getPropertyById(propertyId);
+    public LiveData<List<PropertyAndComments>> getPropertyById(int propertyId){
+        return mPropertyDao.getPropertyById();
     }
 
     public LiveData<List<Comment>> getCommentByPropertyId(int propertyId){

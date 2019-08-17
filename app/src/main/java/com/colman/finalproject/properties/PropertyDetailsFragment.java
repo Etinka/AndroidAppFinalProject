@@ -21,6 +21,8 @@ import com.colman.finalproject.models.Property;
 import com.colman.finalproject.view.LoaderButton;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.Objects;
+
 
 public class PropertyDetailsFragment extends GagBaseFragment {
 
@@ -37,12 +39,9 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     private TextView mFloor;
     private TextView mElevator;
     private TextView mSafeRoom;
-    private RecyclerView commentsList;
-    private LoaderButton addCommentButton;
-
-    private PropertyDetailsViewModel viewModel;
-    private CommentsAdapter commentsAdapter;
-    private int propertyId;
+    private RecyclerView mCommentsRecyclerView;
+    private CommentsAdapter mCommentsAdapter;
+    private int mPropertyId;
 
     @Nullable
     @Override
@@ -59,12 +58,12 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(this).get(PropertyDetailsViewModel.class);
+        PropertyDetailsViewModel viewModel = ViewModelProviders.of(this).get(PropertyDetailsViewModel.class);
 
-        propertyId = (getArguments() != null) ?
+        mPropertyId = (getArguments() != null) ?
                 PropertyDetailsFragmentArgs.fromBundle(getArguments()).getPropertyId() : 0;
 
-        viewModel.setPropertyId(propertyId, getViewLifecycleOwner(), property -> {
+        viewModel.setPropertyId(mPropertyId, getViewLifecycleOwner(), property -> {
             if (property != null) {
                 fillPropertyData(property);
             }
@@ -83,17 +82,17 @@ public class PropertyDetailsFragment extends GagBaseFragment {
         mElevator = rootView.findViewById(R.id.details_elevator);
         mSafeRoom = rootView.findViewById(R.id.details_safe_room);
         dotsIndicator = rootView.findViewById(R.id.dots_indicator);
-        commentsList = rootView.findViewById(R.id.comments);
-        addCommentButton = rootView.findViewById(R.id.add_comment);
+        mCommentsRecyclerView = rootView.findViewById(R.id.comments);
+        LoaderButton addCommentButton = rootView.findViewById(R.id.add_comment);
 
-        commentsList.setHasFixedSize(true);
-        ((LinearLayoutManager) commentsList.getLayoutManager()).setOrientation(RecyclerView.VERTICAL);
+        mCommentsRecyclerView.setHasFixedSize(true);
+        ((LinearLayoutManager) Objects.requireNonNull(mCommentsRecyclerView.getLayoutManager())).setOrientation(RecyclerView.VERTICAL);
 
         addCommentButton.setOnClickListener(view -> {
             PropertyDetailsFragmentDirections.ActionPropertyDetailsFragmentToAddCommentFragment direction =
                     PropertyDetailsFragmentDirections
                             .actionPropertyDetailsFragmentToAddCommentFragment()
-                            .setPropertyId(propertyId);
+                            .setPropertyId(mPropertyId);
 
             Navigation.findNavController(rootView).navigate(direction);
         });
@@ -119,13 +118,12 @@ public class PropertyDetailsFragment extends GagBaseFragment {
 
         dotsIndicator.setupWithViewPager(mImagePager);
 
-        if(property.getComments() != null && !property.getComments().isEmpty()) {
-            if(commentsAdapter == null) {
-                commentsAdapter = new CommentsAdapter(getContext(), property.getActiveComments());
-                commentsList.setAdapter(commentsAdapter);
-            } else {
-                commentsAdapter.notifyDataSetChanged();
+        if (!property.getComments().isEmpty()) {
+            if (mCommentsAdapter == null) {
+                mCommentsAdapter = new CommentsAdapter(getContext());
+                mCommentsRecyclerView.setAdapter(mCommentsAdapter);
             }
+            mCommentsAdapter.updateComments(property.getActiveComments());
         }
     }
 }

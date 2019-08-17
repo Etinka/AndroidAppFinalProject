@@ -11,7 +11,11 @@ import androidx.lifecycle.Observer;
 import com.colman.finalproject.bases.GagBaseViewModel;
 import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
+import com.colman.finalproject.models.PropertyAndComments;
 import com.google.firebase.Timestamp;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PropertyDetailsViewModel extends GagBaseViewModel {
 
@@ -24,17 +28,21 @@ public class PropertyDetailsViewModel extends GagBaseViewModel {
 
     void setPropertyId(int propertyId, LifecycleOwner lifecycleOwner, Observer<Property> observer) {
         mPropertyLiveData.observe(lifecycleOwner, observer);
-        mModel.observePropertyLiveData(propertyId, lifecycleOwner, property -> {
-            mProperty = property;
-            mPropertyLiveData.postValue(property);
-        });
+        mModel.observePropertyLiveData(propertyId, lifecycleOwner, this::setProperty);
+        mModel.getCommentsForProperty(propertyId);
+    }
 
-        mModel.observeCommentsLiveData(propertyId, lifecycleOwner, commentList -> {
-            if (mProperty != null) {
-                mProperty.setComments(commentList);
-                mPropertyLiveData.postValue(mProperty);
+    private void setProperty(List<PropertyAndComments> propertyAndCommentsList) {
+        if (propertyAndCommentsList != null && propertyAndCommentsList.size() > 0) {
+            Property property = propertyAndCommentsList.get(0).getProperty();
+            List<Comment> comments = new ArrayList<>();
+            for (PropertyAndComments propertyAndComment : propertyAndCommentsList) {
+                comments.add(propertyAndComment.getComments());
             }
-        });
+            property.setComments(comments);
+            mProperty = property;
+            mPropertyLiveData.postValue(mProperty);
+        }
     }
 
     void addComment(@NonNull String comment, @Nullable String imageUrl) {
@@ -43,13 +51,13 @@ public class PropertyDetailsViewModel extends GagBaseViewModel {
     }
 
     void updateComment(@NonNull Comment comment) {
-        if(comment.getUserUid().equals(mModel.getUserUid())) {
+        if (comment.getUserUid().equals(mModel.getUserUid())) {
             mModel.updateComment(comment);
         }
     }
 
     void deleteComment(@NonNull Comment comment) {
-        if(comment.getUserUid().equals(mModel.getUserUid())) {
+        if (comment.getUserUid().equals(mModel.getUserUid())) {
             mModel.deleteComment(comment);
         }
     }

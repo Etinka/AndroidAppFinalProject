@@ -26,6 +26,7 @@ public class Comment{
     @NonNull
     private String text = "";
     @Nullable
+    @ColumnInfo(name = "image_url")
     private String imageUrl = "";
     @NonNull
     private String userUid = "";

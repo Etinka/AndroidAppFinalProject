@@ -12,6 +12,7 @@ import com.colman.finalproject.model.firebase.IFirebaseListener;
 import com.colman.finalproject.model.firebase.IFirebaseManager;
 import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
+import com.colman.finalproject.models.PropertyAndComments;
 import com.colman.finalproject.room.PropertyRepository;
 import com.colman.finalproject.utils.Logger;
 
@@ -127,11 +128,6 @@ public class Model {
         mRepository.getAllProperties().observe(lifecycleOwner, observer);
     }
 
-    public void observeCommentsLiveData(int propertyId, LifecycleOwner lifecycleOwner, Observer<List<Comment>> observer) {
-        mRepository.getCommentByPropertyId(propertyId).observe(lifecycleOwner, observer);
-        getCommentsForProperty(propertyId);
-    }
-
     public void addComment(Comment comment) {
         mFirebaseManager.addComment(comment);
     }
@@ -144,11 +140,11 @@ public class Model {
         mFirebaseManager.updateComment(comment);
     }
 
-    private void getCommentsForProperty(int propertyId) {
+    public void getCommentsForProperty(int propertyId) {
         mFirebaseManager.getCommentsForProperty(propertyId, firebaseListener);
     }
 
-    public void observePropertyLiveData(int propertyId, LifecycleOwner lifecycleOwner, Observer<Property> observer) {
+    public void observePropertyLiveData(int propertyId, LifecycleOwner lifecycleOwner, Observer<List<PropertyAndComments>> observer) {
         mRepository.getPropertyById(propertyId).observe(lifecycleOwner, observer);
     }
 }
