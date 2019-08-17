@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.colman.finalproject.model.firebase.FirebaseManager;
@@ -130,15 +132,19 @@ public class Model {
         mRepository.getAllProperties().observe(lifecycleOwner, observer);
     }
 
-    public void addComment(Comment comment, @Nullable Bitmap imageBitmap) {
+    public LiveData<Boolean> addComment(Comment comment, @Nullable Bitmap imageBitmap) {
+        MutableLiveData<Boolean> done = new MutableLiveData<>();
         if (imageBitmap != null) {
             mFirebaseManager.saveImage(imageBitmap, url -> {
                 comment.setImageUrl(url);
                 mFirebaseManager.addComment(comment);
+                done.postValue(true);
             });
         } else {
             mFirebaseManager.addComment(comment);
+            done.postValue(true);
         }
+        return done;
     }
 
     public void updateComment(Comment comment) {
