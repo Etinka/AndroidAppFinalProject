@@ -52,12 +52,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         commentViewHolder.writerName.setText(comment.getUserName());
         commentViewHolder.commentDate.setText(DateUtils.getRelativeTimeSpanString(comment.getDate().toDate().getTime()));
         commentViewHolder.commentContent.setText(comment.getText());
+        boolean hasImage = !TextUtils.isEmpty(comment.getImageUrl());
 
-        if (!TextUtils.isEmpty(comment.getImageUrl())) {
+        if (hasImage) {
             Picasso.get()
                     .load(comment.getImageUrl())
                     .into(commentViewHolder.commentImage);
         }
+        commentViewHolder.commentImage.setVisibility(hasImage ? View.VISIBLE : View.GONE);
 
         if (comment.getUserUid().equals(userId)) {
             commentViewHolder.editButton.setVisibility(View.VISIBLE);

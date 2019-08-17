@@ -18,7 +18,7 @@ import java.util.Objects;
 @SuppressWarnings({"unused", "NullableProblems"})
 @Entity(tableName = "comment_table")
 @TypeConverters({TimestampConverters.class})
-public class Comment{
+public class Comment {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "comment_id")
@@ -50,7 +50,7 @@ public class Comment{
         this.userUid = Objects.requireNonNull(in.readString());
         this.date = Objects.requireNonNull(in.readParcelable(Timestamp.class.getClassLoader()));
         this.userName = Objects.requireNonNull(in.readString());
-        this.isActive = in.readByte() !=0;
+        this.isActive = in.readByte() != 0;
         this.propertyId = in.readInt();
     }
 
@@ -61,7 +61,7 @@ public class Comment{
     }
 
     @Ignore
-    public Comment( @NonNull String text, @Nullable String imageUrl,
+    public Comment(@NonNull String text, @Nullable String imageUrl,
                    @NonNull String userUid, @NonNull Timestamp date, @NonNull String userName,
                    boolean isActive, int propertyId) {
         this.text = text;
@@ -120,6 +120,9 @@ public class Comment{
 
     @NonNull
     public String getUserName() {
+        if (userName.isEmpty()) {
+            return "משתמש";
+        }
         return userName;
     }
 
