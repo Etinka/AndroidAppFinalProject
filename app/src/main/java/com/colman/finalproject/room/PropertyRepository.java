@@ -32,6 +32,10 @@ public class PropertyRepository {
         return mPropertyDao.getPropertyById();
     }
 
+    public LiveData<Comment> getCommentById(String commentId){
+        return mCommentDao.getCommentById(commentId);
+    }
+
     public LiveData<List<Comment>> getCommentByPropertyId(int propertyId){
         return mCommentDao.getAllCommentsByProperyId(propertyId);
     }

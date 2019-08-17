@@ -30,8 +30,8 @@
     <string name="register_title">הרשמה</string>
     <string name="repassword">הכנס סיסמה שנית</string>
 
-    <!--TODO translate to hebrew-->
-    <string name="comment_hint">Your Comment</string>
-    <string name="send">Send</string>
-    <string name="add_comment">Add Comment</string>
+    <string name="comment_hint">התגובה שלך</string>
+    <string name="send">שלח</string>
+    <string name="add_comment">הוספת תגובה</string>
+    <string name="delete_comment">מחק תגובה</string>
 </resources>

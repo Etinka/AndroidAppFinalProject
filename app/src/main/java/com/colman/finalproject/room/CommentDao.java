@@ -23,4 +23,7 @@ public interface CommentDao {
     @Query("SELECT * from comment_table  WHERE propertyId = :propertyId ")
     LiveData<List<Comment>> getAllCommentsByProperyId(int propertyId);
 
+    @Query("SELECT * FROM comment_table WHERE comment_id = :commentId ")
+    LiveData<Comment> getCommentById(String commentId);
+
 }

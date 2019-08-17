@@ -58,7 +58,7 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        PropertyDetailsViewModel viewModel = ViewModelProviders.of(this).get(PropertyDetailsViewModel.class);
+        PropertyDetailsViewModel viewModel = ViewModelProviders.of(requireActivity()).get(PropertyDetailsViewModel.class);
 
         mPropertyId = (getArguments() != null) ?
                 PropertyDetailsFragmentArgs.fromBundle(getArguments()).getPropertyId() : 0;
@@ -96,6 +96,7 @@ public class PropertyDetailsFragment extends GagBaseFragment {
 
             Navigation.findNavController(rootView).navigate(direction);
         });
+
     }
 
     private void fillPropertyData(Property property) {

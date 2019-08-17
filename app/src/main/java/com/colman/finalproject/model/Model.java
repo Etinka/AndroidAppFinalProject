@@ -147,4 +147,8 @@ public class Model {
     public void observePropertyLiveData(int propertyId, LifecycleOwner lifecycleOwner, Observer<List<PropertyAndComments>> observer) {
         mRepository.getPropertyById(propertyId).observe(lifecycleOwner, observer);
     }
+
+    public void observeCommentLiveData(String commentId, LifecycleOwner lifecycleOwner, Observer<Comment> observer) {
+        mRepository.getCommentById(commentId).observe(lifecycleOwner, observer);
+    }
 }

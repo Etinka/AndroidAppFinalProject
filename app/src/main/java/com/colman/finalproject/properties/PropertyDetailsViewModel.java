@@ -1,6 +1,7 @@
 package com.colman.finalproject.properties;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,16 +21,31 @@ import java.util.List;
 public class PropertyDetailsViewModel extends GagBaseViewModel {
 
     private Property mProperty;
+    private Comment mComment;
     private MutableLiveData<Property> mPropertyLiveData = new MutableLiveData<>();
+    private MutableLiveData<Comment> mCommentLiveData = new MutableLiveData<>();
 
     public PropertyDetailsViewModel(@NonNull Application application) {
         super(application);
     }
 
+
     void setPropertyId(int propertyId, LifecycleOwner lifecycleOwner, Observer<Property> observer) {
         mPropertyLiveData.observe(lifecycleOwner, observer);
         mModel.observePropertyLiveData(propertyId, lifecycleOwner, this::setProperty);
         mModel.getCommentsForProperty(propertyId);
+    }
+
+    void setCommentId(String commentId, LifecycleOwner lifecycleOwner, Observer<Comment> observer) {
+        mCommentLiveData.observe(lifecycleOwner, observer);
+        mModel.observeCommentLiveData(commentId, lifecycleOwner, comment -> {
+            mComment = comment;
+            mCommentLiveData.postValue(mComment);
+        });
+    }
+
+    void observeProperty(LifecycleOwner lifecycleOwner, Observer<Property> observer) {
+        mPropertyLiveData.observe(lifecycleOwner, observer);
     }
 
     private void setProperty(List<PropertyAndComments> propertyAndCommentsList) {
@@ -45,20 +61,31 @@ public class PropertyDetailsViewModel extends GagBaseViewModel {
         }
     }
 
-    void addComment(@NonNull String comment, @Nullable String imageUrl) {
+    private void addComment(@NonNull String comment, @Nullable String imageUrl) {
         mModel.addComment(
                 new Comment(comment, imageUrl, mModel.getUserUid(), Timestamp.now(), mModel.getUserName(), true, mProperty.getId()));
     }
 
-    void updateComment(@NonNull Comment comment) {
-        if (comment.getUserUid().equals(mModel.getUserUid())) {
-            mModel.updateComment(comment);
+    private void updateComment(String comment) {
+        mComment.setText(comment);
+        if (mComment.getUserUid().equals(mModel.getUserUid())) {
+            mModel.updateComment(mComment);
         }
     }
 
-    void deleteComment(@NonNull Comment comment) {
-        if (comment.getUserUid().equals(mModel.getUserUid())) {
-            mModel.deleteComment(comment);
+    void clickedAddComment(@Nullable String comment) {
+        if (comment != null && !TextUtils.isEmpty(comment)) {
+            if (mComment != null) {
+                updateComment(comment);
+            } else {
+                addComment(comment, null);
+            }
+        }
+    }
+
+    void deleteComment() {
+        if (mComment != null && mComment.getUserUid().equals(mModel.getUserUid())) {
+            mModel.deleteComment(mComment);
         }
     }
 }
