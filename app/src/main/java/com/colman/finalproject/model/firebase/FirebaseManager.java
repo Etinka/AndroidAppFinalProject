@@ -1,9 +1,13 @@
 package com.colman.finalproject.model.firebase;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import com.colman.finalproject.model.Model;
 import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
 import com.colman.finalproject.utils.DateTimeUtils;
@@ -16,12 +20,17 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class FirebaseManager implements IFirebaseManager {
+public class FirebaseManager{
     public static String EMPTY_USER_NAME = "משתמש";
     private Logger logger = new Logger(this.getClass().getSimpleName());
 
@@ -45,17 +54,14 @@ public class FirebaseManager implements IFirebaseManager {
         return _instance;
     }
 
-    @Override
     public boolean isUserLoggedIn() {
         return mAuth.getCurrentUser() != null;
     }
 
-    @Override
     public String getUserUid() {
         return mAuth.getUid();
     }
 
-    @Override
     public String getUserName() {
         if (mAuth.getCurrentUser() != null) {
             return mAuth.getCurrentUser().getDisplayName();
@@ -63,7 +69,6 @@ public class FirebaseManager implements IFirebaseManager {
         return EMPTY_USER_NAME;
     }
 
-    @Override
     public String getUserEmail() {
         if (mAuth.getCurrentUser() != null) {
             return mAuth.getCurrentUser().getEmail();
@@ -71,7 +76,6 @@ public class FirebaseManager implements IFirebaseManager {
         return EMPTY_USER_NAME;
     }
 
-    @Override
     public void updateUserDetails(String userName) {
         if (mAuth.getCurrentUser() != null) {
             logger.logDebug("updateProfile");
@@ -80,7 +84,6 @@ public class FirebaseManager implements IFirebaseManager {
         }
     }
 
-    @Override
     public void registerUser(String email, String password, String userName) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((authResult) -> {
             if (authResult.isSuccessful()) {
@@ -93,7 +96,6 @@ public class FirebaseManager implements IFirebaseManager {
         });
     }
 
-    @Override
     public void signInUser(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((authResult) -> {
             if (authResult.isSuccessful()) {
@@ -107,23 +109,19 @@ public class FirebaseManager implements IFirebaseManager {
         });
     }
 
-    @Override
     public void logout() {
         mAuth.signOut();
     }
 
-    @Override
     public void observeSignedInLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer) {
         mSignedInLiveData.observe(lifecycleOwner, observer);
     }
 
-    @Override
     public void observeAuthStateLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer) {
         mAuthStateLiveData.observe(lifecycleOwner, observer);
     }
 
     //Properties
-    @Override
     public void getCommentsForProperty(int propertyId, IFirebaseListener listener) {
         mCommentsCollectionRef.whereEqualTo("propertyId", propertyId).addSnapshotListener((snapshot, e) -> {
             if (e != null) {
@@ -138,7 +136,6 @@ public class FirebaseManager implements IFirebaseManager {
         });
     }
 
-    @Override
     public void addComment(Comment comment) {
         mCommentsCollectionRef.add(comment).addOnCompleteListener(task -> {
             if (task.getResult() != null && task.isSuccessful()) {
@@ -148,18 +145,15 @@ public class FirebaseManager implements IFirebaseManager {
         });
     }
 
-    @Override
     public void deleteComment(Comment comment) {
         comment.setActive(false);
         mCommentsCollectionRef.document(comment.getId()).set(comment);
     }
 
-    @Override
     public void updateComment(Comment comment) {
         mCommentsCollectionRef.document(comment.getId()).set(comment);
     }
 
-    @Override
     public void getAllProperties(long from, IFirebaseListener listener) {
         if (from <= 0) {
             getAllProperties(DateTimeUtils.getTimeStamp(2018, 1, 1), listener);
@@ -168,7 +162,6 @@ public class FirebaseManager implements IFirebaseManager {
         }
     }
 
-    @Override
     public void updatePropertyListener(long from, IFirebaseListener listener) {
         listenerRegistration.remove();
         getAllProperties(DateTimeUtils.getTimestampFromLong(from), listener);
@@ -195,6 +188,38 @@ public class FirebaseManager implements IFirebaseManager {
 
                 listener.updatedProperties(properties);
                 logger.logDebug("Current properties number: " + properties.size());
+            }
+        });
+    }
+
+    public void saveImage(Bitmap imageBitmap, final Model.SaveImageListener listener) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReference();
+
+        Date d = new Date();
+        final StorageReference imageStorageRef = storageRef.child("image_"  + d.getTime() + ".jpg");
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = imageStorageRef.putBytes(data);
+
+        uploadTask.continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw Objects.requireNonNull(task.getException());
+            }
+
+            // Continue with the task to get the download URL
+            return imageStorageRef.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Uri downloadUri = task.getResult();
+                assert downloadUri != null;
+                listener.onComplete(downloadUri.toString());
+            } else {
+                listener.onComplete(null);
             }
         });
     }

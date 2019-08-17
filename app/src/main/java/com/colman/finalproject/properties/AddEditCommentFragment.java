@@ -86,7 +86,6 @@ public class AddEditCommentFragment extends GagBaseFragment {
         }
 
         mDeleteCommentButton.setVisibility(isInEditMode ? View.VISIBLE : View.GONE);
-
     }
 
     private void updateCommentViews(Comment comment) {

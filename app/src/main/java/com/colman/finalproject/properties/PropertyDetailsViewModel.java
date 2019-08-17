@@ -1,6 +1,7 @@
 package com.colman.finalproject.properties;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -61,9 +62,15 @@ public class PropertyDetailsViewModel extends GagBaseViewModel {
         }
     }
 
-    private void addComment(@NonNull String comment, @Nullable String imageUrl) {
+    void addComment(@NonNull String comment, @Nullable Bitmap imageBitmap) {
         mModel.addComment(
-                new Comment(comment, imageUrl, mModel.getUserUid(), Timestamp.now(), mModel.getUserName(), true, mProperty.getId()));
+                new Comment(comment, null, mModel.getUserUid(), Timestamp.now(), mModel.getUserName(), true, mProperty.getId()), imageBitmap);
+    }
+
+    void deleteComment(@NonNull Comment comment) {
+        if (comment.getUserUid().equals(mModel.getUserUid())) {
+            mModel.deleteComment(comment);
+        }
     }
 
     private void updateComment(String comment) {

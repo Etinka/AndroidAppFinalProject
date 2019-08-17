@@ -3,13 +3,13 @@ package com.colman.finalproject.model;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
 import com.colman.finalproject.model.firebase.FirebaseManager;
 import com.colman.finalproject.model.firebase.IFirebaseListener;
-import com.colman.finalproject.model.firebase.IFirebaseManager;
 import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
 import com.colman.finalproject.models.PropertyAndComments;
@@ -18,12 +18,14 @@ import com.colman.finalproject.utils.Logger;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 public class Model {
     private Logger logger = new Logger(this.getClass().getSimpleName());
     private static String LAST_UPDATED_KEY = "lastUpdatedTimestamp";
 
     private static Model _instance;
-    private IFirebaseManager mFirebaseManager = FirebaseManager.getInstance();
+    private FirebaseManager mFirebaseManager = FirebaseManager.getInstance();
     private PropertyRepository mRepository;
     private SharedPreferences sharedPreferences;
 
@@ -128,16 +130,29 @@ public class Model {
         mRepository.getAllProperties().observe(lifecycleOwner, observer);
     }
 
-    public void addComment(Comment comment) {
-        mFirebaseManager.addComment(comment);
+    public void addComment(Comment comment, @Nullable Bitmap imageBitmap) {
+        if (imageBitmap != null) {
+            mFirebaseManager.saveImage(imageBitmap, url -> {
+                comment.setImageUrl(url);
+                mFirebaseManager.addComment(comment);
+            });
+        } else {
+            mFirebaseManager.addComment(comment);
+        }
+    }
+
+    public void updateComment(Comment comment) {
+        mFirebaseManager.updateComment(comment);
     }
 
     public void deleteComment(Comment comment) {
         mFirebaseManager.deleteComment(comment);
     }
 
-    public void updateComment(Comment comment) {
-        mFirebaseManager.updateComment(comment);
+    private void saveImage(Bitmap imageBitmap) {
+        mFirebaseManager.saveImage(imageBitmap, url -> {
+
+        });
     }
 
     public void getCommentsForProperty(int propertyId) {
@@ -150,5 +165,9 @@ public class Model {
 
     public void observeCommentLiveData(String commentId, LifecycleOwner lifecycleOwner, Observer<Comment> observer) {
         mRepository.getCommentById(commentId).observe(lifecycleOwner, observer);
+    }
+
+    public interface SaveImageListener {
+        void onComplete(String url);
     }
 }
