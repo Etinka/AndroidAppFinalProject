@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.colman.finalproject.R;
 import com.colman.finalproject.models.Property;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.PropertyViewHolder> {
 
@@ -52,8 +52,8 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.Pr
 
         Picasso.get()
                 .load(properties.get(i).getImageUrl())
+                .placeholder(R.drawable.img_placeholder)
                 .into(propertyViewHolder.propertyImage);
-
     }
 
     @Override

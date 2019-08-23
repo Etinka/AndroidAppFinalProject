@@ -27,9 +27,9 @@ import java.util.Objects;
 public class PropertyDetailsFragment extends GagBaseFragment {
 
     //View
-    private View rootView;
+    private View mRootView;
     private ViewPager mImagePager;
-    private TabLayout dotsIndicator;
+    private TabLayout mDotsIndicator;
     private TextView mPrice;
     private TextView mAddress;
     private TextView mType;
@@ -39,19 +39,18 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     private TextView mFloor;
     private TextView mElevator;
     private TextView mSafeRoom;
-    private RecyclerView mCommentsRecyclerView;
     private CommentsAdapter mCommentsAdapter;
     private int mPropertyId;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (rootView == null) {
-            rootView = inflater.inflate(R.layout.property_details_fragment, container, false);
+        if (mRootView == null) {
+            mRootView = inflater.inflate(R.layout.property_details_fragment, container, false);
             findViews();
         }
 
-        return rootView;
+        return mRootView;
     }
 
     @Override
@@ -71,22 +70,24 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     }
 
     private void findViews() {
-        mImagePager = rootView.findViewById(R.id.property_details_image);
-        mPrice = rootView.findViewById(R.id.details_price);
-        mAddress = rootView.findViewById(R.id.details_address);
-        mType = rootView.findViewById(R.id.details_property_type);
-        mNumRooms = rootView.findViewById(R.id.details_num_rooms);
-        mBalcony = rootView.findViewById(R.id.details_balcony);
-        mSize = rootView.findViewById(R.id.details_property_size);
-        mFloor = rootView.findViewById(R.id.details_floor);
-        mElevator = rootView.findViewById(R.id.details_elevator);
-        mSafeRoom = rootView.findViewById(R.id.details_safe_room);
-        dotsIndicator = rootView.findViewById(R.id.dots_indicator);
-        mCommentsRecyclerView = rootView.findViewById(R.id.comments);
-        LoaderButton addCommentButton = rootView.findViewById(R.id.add_comment);
+        mImagePager = mRootView.findViewById(R.id.property_details_image);
+        mPrice = mRootView.findViewById(R.id.details_price);
+        mAddress = mRootView.findViewById(R.id.details_address);
+        mType = mRootView.findViewById(R.id.details_property_type);
+        mNumRooms = mRootView.findViewById(R.id.details_num_rooms);
+        mBalcony = mRootView.findViewById(R.id.details_balcony);
+        mSize = mRootView.findViewById(R.id.details_property_size);
+        mFloor = mRootView.findViewById(R.id.details_floor);
+        mElevator = mRootView.findViewById(R.id.details_elevator);
+        mSafeRoom = mRootView.findViewById(R.id.details_safe_room);
+        mDotsIndicator = mRootView.findViewById(R.id.dots_indicator);
+        RecyclerView commentsRecyclerView = mRootView.findViewById(R.id.comments);
+        LoaderButton addCommentButton = mRootView.findViewById(R.id.add_comment);
 
-        mCommentsRecyclerView.setHasFixedSize(true);
-        ((LinearLayoutManager) Objects.requireNonNull(mCommentsRecyclerView.getLayoutManager())).setOrientation(RecyclerView.VERTICAL);
+        commentsRecyclerView.setHasFixedSize(true);
+        ((LinearLayoutManager) Objects.requireNonNull(commentsRecyclerView.getLayoutManager())).setOrientation(RecyclerView.VERTICAL);
+        mCommentsAdapter = new CommentsAdapter(getContext());
+        commentsRecyclerView.setAdapter(mCommentsAdapter);
 
         addCommentButton.setOnClickListener(view -> {
             PropertyDetailsFragmentDirections.ActionPropertyDetailsFragmentToAddCommentFragment direction =
@@ -94,7 +95,7 @@ public class PropertyDetailsFragment extends GagBaseFragment {
                             .actionPropertyDetailsFragmentToAddCommentFragment()
                             .setPropertyId(mPropertyId);
 
-            Navigation.findNavController(rootView).navigate(direction);
+            Navigation.findNavController(mRootView).navigate(direction);
         });
 
     }
@@ -117,14 +118,7 @@ public class PropertyDetailsFragment extends GagBaseFragment {
                 property.getImages())
         );
 
-        dotsIndicator.setupWithViewPager(mImagePager);
-
-        if (!property.getComments().isEmpty()) {
-            if (mCommentsAdapter == null) {
-                mCommentsAdapter = new CommentsAdapter(getContext());
-                mCommentsRecyclerView.setAdapter(mCommentsAdapter);
-            }
-            mCommentsAdapter.updateComments(property.getActiveComments());
-        }
+        mDotsIndicator.setupWithViewPager(mImagePager);
+        mCommentsAdapter.updateComments(property.getComments());
     }
 }

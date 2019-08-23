@@ -74,7 +74,9 @@ public class AddEditCommentFragment extends GagBaseFragment {
         mDeleteCommentButton = mRootView.findViewById(R.id.delete_comment);
 
         mAddCommentButton.setOnClickListener(button -> {
-            mViewModel.clickedAddComment(mCommentContent.getText().toString(), bitmap);
+            hideSoftKeyBoard();
+            mViewModel.clickedAddComment(
+                    mCommentContent.getText() != null ? mCommentContent.getText().toString() : "", bitmap);
             mAddCommentButton.handleLoadingStatus(true);
         });
 

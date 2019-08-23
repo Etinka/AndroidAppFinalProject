@@ -14,7 +14,6 @@ import com.colman.finalproject.model.firebase.FirebaseManager;
 import com.colman.finalproject.model.firebase.IFirebaseListener;
 import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
-import com.colman.finalproject.models.PropertyAndComments;
 import com.colman.finalproject.room.PropertyRepository;
 import com.colman.finalproject.utils.Logger;
 
@@ -155,18 +154,19 @@ public class Model {
         mFirebaseManager.deleteComment(comment);
     }
 
-    private void saveImage(Bitmap imageBitmap) {
-        mFirebaseManager.saveImage(imageBitmap, url -> {
-
-        });
-    }
-
-    public void getCommentsForProperty(int propertyId) {
+    private void getCommentsForProperty(int propertyId) {
         mFirebaseManager.getCommentsForProperty(propertyId, firebaseListener);
     }
 
-    public void observePropertyLiveData(int propertyId, LifecycleOwner lifecycleOwner, Observer<List<PropertyAndComments>> observer) {
-        mRepository.getPropertyById(propertyId).observe(lifecycleOwner, observer);
+    public void observePropertyLiveData(int propertyId, LifecycleOwner lifecycleOwner, Observer<Property> observer) {
+        MutableLiveData<Property> propertyLiveData = new MutableLiveData<>();
+        propertyLiveData.observe(lifecycleOwner, observer);
+        getCommentsForProperty(propertyId);
+        mRepository.getPropertyById(propertyId).observe(lifecycleOwner, property ->
+                mRepository.getCommentByPropertyId(propertyId).observe(lifecycleOwner, comments -> {
+                    property.setComments(comments);
+                    propertyLiveData.postValue(property);
+                }));
     }
 
     public void observeCommentLiveData(String commentId, LifecycleOwner lifecycleOwner, Observer<Comment> observer) {

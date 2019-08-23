@@ -12,7 +12,6 @@ import java.util.List;
 
 @Dao
 public interface CommentDao {
-    String COMMENTS_TABLE_NAME = "comment_table";
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Comment comment);
@@ -20,7 +19,7 @@ public interface CommentDao {
     @Query("DELETE FROM comment_table")
     void deleteAll();
 
-    @Query("SELECT * from comment_table  WHERE propertyId = :propertyId ")
+    @Query("SELECT * from comment_table  WHERE propertyId = :propertyId AND isActive = 1 ORDER BY date DESC")
     LiveData<List<Comment>> getAllCommentsByProperyId(int propertyId);
 
     @Query("SELECT * FROM comment_table WHERE comment_id = :commentId ")

@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.colman.finalproject.models.Property;
-import com.colman.finalproject.models.PropertyAndComments;
 
 import java.util.List;
 
@@ -24,7 +23,6 @@ public interface PropertyDao {
     LiveData<List<Property>> getAllProperty();
 
     @Query("SELECT * FROM property_table " +
-            "INNER JOIN comment_table " +
-            "ON propertyId=property_id")
-    LiveData<List<PropertyAndComments>> getPropertyById();
+            "WHERE property_id =:pId")
+    LiveData<Property> getPropertyById(int pId);
 }

@@ -15,13 +15,8 @@ import androidx.lifecycle.Observer;
 import com.colman.finalproject.bases.GagBaseViewModel;
 import com.colman.finalproject.models.Comment;
 import com.colman.finalproject.models.Property;
-import com.colman.finalproject.models.PropertyAndComments;
 import com.colman.finalproject.utils.SingleLiveEvent;
 import com.google.firebase.Timestamp;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class PropertyDetailsViewModel extends GagBaseViewModel {
 
@@ -39,7 +34,6 @@ public class PropertyDetailsViewModel extends GagBaseViewModel {
     void setPropertyId(int propertyId, LifecycleOwner lifecycleOwner, Observer<Property> observer) {
         mPropertyLiveData.observe(lifecycleOwner, observer);
         mModel.observePropertyLiveData(propertyId, lifecycleOwner, this::setProperty);
-        mModel.getCommentsForProperty(propertyId);
     }
 
     void setCommentId(String commentId, LifecycleOwner lifecycleOwner, Observer<Comment> observer) {
@@ -56,18 +50,9 @@ public class PropertyDetailsViewModel extends GagBaseViewModel {
         });
     }
 
-    private void setProperty(List<PropertyAndComments> propertyAndCommentsList) {
-        if (propertyAndCommentsList != null && propertyAndCommentsList.size() > 0) {
-            Property property = propertyAndCommentsList.get(0).getProperty();
-            List<Comment> comments = new ArrayList<>();
-            for (PropertyAndComments propertyAndComment : propertyAndCommentsList) {
-                comments.add(propertyAndComment.getComments());
-            }
-            Collections.sort(comments, (comment1, comment2) -> comment2.getDate().compareTo(comment1.getDate()));
-            property.setComments(comments);
-            mProperty = property;
-            mPropertyLiveData.postValue(mProperty);
-        }
+    private void setProperty(Property property) {
+        mProperty = property;
+        mPropertyLiveData.postValue(mProperty);
     }
 
     private void addComment(@NonNull String comment, @Nullable Bitmap imageBitmap) {

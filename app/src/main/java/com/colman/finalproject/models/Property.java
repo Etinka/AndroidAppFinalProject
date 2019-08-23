@@ -201,16 +201,6 @@ public class Property{
         return imagesUrls;
     }
 
-    @NonNull
-    public List<Comment> getActiveComments() {
-        List<Comment> active = new ArrayList<>();
-        for (Comment comment : comments) {
-            if (comment.isActive())
-                active.add(comment);
-        }
-        return active;
-    }
-
     public void setComments(@NonNull List<Comment> comments) {
         this.comments = comments;
     }
