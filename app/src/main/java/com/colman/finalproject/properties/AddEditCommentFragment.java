@@ -120,7 +120,7 @@ public class AddEditCommentFragment extends GagBaseFragment {
         if (comment == null) return;
         mCommentContent.setText(comment.getText());
         if (!TextUtils.isEmpty(comment.getImageUrl())) {
-            Picasso.get().load(comment.getImageUrl()).into(mAddImageButton);
+            Picasso.get().load(comment.getImageUrl()).placeholder(R.drawable.img_placeholder).into(mAddImageButton);
         }
     }
 

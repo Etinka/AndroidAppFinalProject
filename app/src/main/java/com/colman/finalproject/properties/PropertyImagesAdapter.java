@@ -6,18 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.viewpager.widget.PagerAdapter;
+
 import com.colman.finalproject.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
 
 public class PropertyImagesAdapter extends PagerAdapter {
 
@@ -41,7 +38,7 @@ public class PropertyImagesAdapter extends PagerAdapter {
         AppCompatImageView image = itemView.findViewById(R.id.image);
         String imageUrl = propertyImages.get(position);
 
-        Picasso.get().load(imageUrl).into(image);
+        Picasso.get().load(imageUrl).placeholder(R.drawable.img_placeholder).into(image);
 
         container.addView(itemView, container.getChildCount());
 

@@ -57,6 +57,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         if (hasImage) {
             Picasso.get()
                     .load(comment.getImageUrl())
+                    .placeholder(R.drawable.img_placeholder)
                     .into(commentViewHolder.commentImage);
         }
         commentViewHolder.commentImage.setVisibility(hasImage ? View.VISIBLE : View.GONE);
