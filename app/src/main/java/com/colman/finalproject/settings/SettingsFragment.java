@@ -70,16 +70,16 @@ public class SettingsFragment extends GagBaseFragment {
 
         mLogoutButton.setOnClickListener(view -> mViewModel.logOut());
 
-        mViewModel.observeLoadingLiveData(getViewLifecycleOwner(),
+        mViewModel.getLoading().observe(getViewLifecycleOwner(),
                 isLoading -> mUpdateButton.handleLoadingStatus(isLoading));
 
-        mViewModel.observeEnableButtonLiveData(getViewLifecycleOwner(),
+        mViewModel.getButtonState().observe(getViewLifecycleOwner(),
                 isEnabled -> mUpdateButton.setEnabled(isEnabled));
 
-        mViewModel.observeSnackbarLiveData(getViewLifecycleOwner(),
+        mViewModel.getShowSnackbar().observe(getViewLifecycleOwner(),
                 message -> UIUtils.showSnackbar(requireContext(), requireView(), message, Snackbar.LENGTH_SHORT));
 
-        mViewModel.observeInfoLiveData(getViewLifecycleOwner(), userInfo -> {
+        mViewModel.getUserInfo().observe(getViewLifecycleOwner(), userInfo -> {
             mUserName.setText(userInfo.getName());
             mEmail.setText(userInfo.getEmail());
             mPassword.setText(userInfo.getEmail());

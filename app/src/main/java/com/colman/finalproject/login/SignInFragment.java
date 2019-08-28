@@ -80,7 +80,7 @@ public class SignInFragment extends GagBaseFragment {
 
         view.findViewById(R.id.registerBtn).setOnClickListener(v -> mViewModel.clickedRegister());
 
-        mViewModel.observeLoggedInLiveData(getViewLifecycleOwner(), isSignedIn -> {
+        mViewModel.getIsLoggedIn().observe(getViewLifecycleOwner(), isSignedIn -> {
             if (isSignedIn != null) {
                 if (isSignedIn) {
                     Navigation.findNavController(view).navigate(SignInFragmentDirections.actionSignInFragmentToBottomNavFragment());
@@ -90,9 +90,9 @@ public class SignInFragment extends GagBaseFragment {
             }
         });
 
-        mViewModel.observeLoadingLiveData(getViewLifecycleOwner(), isLoading -> mLoginBtn.handleLoadingStatus(isLoading));
+        mViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> mLoginBtn.handleLoadingStatus(isLoading));
 
-        mViewModel.observeMoveToRegisterLiveData(getViewLifecycleOwner(), show -> {
+        mViewModel.getMoveToRegister().observe(getViewLifecycleOwner(), show -> {
             if (show) {
                 Navigation.findNavController(view).navigate(SignInFragmentDirections.actionSignInFragmentToRegisterFragment());
             }

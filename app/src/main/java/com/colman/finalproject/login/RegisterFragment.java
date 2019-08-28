@@ -21,13 +21,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.regex.Pattern;
 
 public class RegisterFragment extends GagBaseFragment {
-    private EditText mUserName;
-    private EditText mEmail;
-    private EditText mPassword;
-    private EditText mPasswordValidator;
-
-    private View mEmailErrorMsg;
-    private View mPasswordErrorMsg;
+    private EditText mUserName, mEmail, mPassword, mPasswordValidator;
+    private View mEmailErrorMsg, mPasswordErrorMsg;
     private LoaderButton mRegisterBtn;
 
     private RegisterViewModel mViewModel;
@@ -64,14 +59,14 @@ public class RegisterFragment extends GagBaseFragment {
     }
 
     private void registerObservers() {
-        mViewModel.observeLoadingLiveData(getViewLifecycleOwner(), isLoading -> mRegisterBtn.handleLoadingStatus(isLoading));
+        mViewModel.getLoading().observe(getViewLifecycleOwner(), isLoading -> mRegisterBtn.handleLoadingStatus(isLoading));
 
-        mViewModel.observeViewState(getViewLifecycleOwner(), state -> {
+        mViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             mPasswordErrorMsg.setVisibility(state.isPasswordInvalid() ? View.VISIBLE : View.INVISIBLE);
             mEmailErrorMsg.setVisibility(state.isEmailInvalid() ? View.VISIBLE : View.INVISIBLE);
         });
 
-        mViewModel.observeLoggedInLiveData(getViewLifecycleOwner(), isSignedIn -> {
+        mViewModel.getIsLoggedIn().observe(getViewLifecycleOwner(), isSignedIn -> {
             if (isSignedIn != null) {
                 if (isSignedIn) {
                     Navigation.findNavController(requireView()).navigate(RegisterFragmentDirections.actionRegisterFragmentToBottomNavFragment());

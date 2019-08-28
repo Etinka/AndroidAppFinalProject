@@ -1,19 +1,19 @@
 package com.colman.finalproject.login;
 
 class RegisterViewState {
-    private boolean isPasswordInvalid;
-    private boolean isEmailInvalid;
+    private boolean mIsPasswordInvalid;
+    private boolean mIsEmailInvalid;
 
     RegisterViewState(boolean isPasswordInvalid, boolean isEmailInvalid) {
-        this.isPasswordInvalid = isPasswordInvalid;
-        this.isEmailInvalid = isEmailInvalid;
+        this.mIsPasswordInvalid = isPasswordInvalid;
+        this.mIsEmailInvalid = isEmailInvalid;
     }
 
     boolean isPasswordInvalid() {
-        return isPasswordInvalid;
+        return mIsPasswordInvalid;
     }
 
     boolean isEmailInvalid() {
-        return isEmailInvalid;
+        return mIsEmailInvalid;
     }
 }

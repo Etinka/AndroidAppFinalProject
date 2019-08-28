@@ -11,8 +11,10 @@ import androidx.navigation.Navigation;
 
 import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseFragment;
+import com.colman.finalproject.model.Model;
 
 public class SplashFragment extends GagBaseFragment {
+    private Model mModel = Model.getInstance();
 
     public SplashFragment() {
     }

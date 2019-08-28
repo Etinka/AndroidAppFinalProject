@@ -6,8 +6,8 @@ import android.util.Patterns;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.colman.finalproject.bases.GagBaseViewModel;
 import com.colman.finalproject.utils.SingleLiveEvent;
@@ -31,12 +31,12 @@ public class RegisterViewModel extends GagBaseViewModel {
         });
     }
 
-    void observeLoadingLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer) {
-        mLoadingLiveData.observe(lifecycleOwner, observer);
+    LiveData<Boolean> getLoading() {
+        return mLoadingLiveData;
     }
 
-    void observeViewState(LifecycleOwner lifecycleOwner, Observer<RegisterViewState> observer) {
-        mViewState.observe(lifecycleOwner, observer);
+    LiveData<RegisterViewState> getViewState() {
+        return mViewState;
     }
 
     void clickedRegister(String email, String password, String password2, String userName) {

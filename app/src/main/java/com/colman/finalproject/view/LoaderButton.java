@@ -18,13 +18,11 @@ import androidx.core.content.ContextCompat;
 
 import com.colman.finalproject.R;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-
 public class LoaderButton extends ConstraintLayout {
 
-    private Button button;
-    private ProgressBar loader;
-    private String buttonText;
+    private Button mButton;
+    private ProgressBar mLoader;
+    private String mButtonText;
 
     public LoaderButton(Context context) {
         super(context);
@@ -43,37 +41,36 @@ public class LoaderButton extends ConstraintLayout {
     @Override
     public void setOnClickListener(@Nullable View.OnClickListener l) {
         super.setOnClickListener(l);
-        button.setOnClickListener(l);
+        mButton.setOnClickListener(l);
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LoaderButton, defStyleAttr, 0);
-        buttonText = typedArray.getString(R.styleable.LoaderButton_ctext);
+        mButtonText = typedArray.getString(R.styleable.LoaderButton_ctext);
         boolean isEnabled = typedArray.getBoolean(R.styleable.LoaderButton_cenabled, true);
         @ColorInt int buttonBackground = typedArray.getColor(R.styleable.LoaderButton_cbackground, ContextCompat.getColor(context, R.color.colorAccent));
         typedArray.recycle();
 
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View customView = inflater.inflate(R.layout.loader_button_layout, this, false);
+        View customView = LayoutInflater.from(getContext()).inflate(R.layout.loader_button_layout, this, false);
         addView(customView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        button = customView.findViewById(R.id.custom_button);
-        loader = customView.findViewById(R.id.custom_loader);
-        button.setEnabled(isEnabled);
-        button.setText(buttonText);
-        button.setBackground(makeSelector(buttonBackground));
+        mButton = customView.findViewById(R.id.custom_button);
+        mLoader = customView.findViewById(R.id.custom_loader);
+        mButton.setEnabled(isEnabled);
+        mButton.setText(mButtonText);
+        mButton.setBackground(makeSelector(buttonBackground));
     }
 
     public void setEnabled(boolean isEnabled) {
-        button.setEnabled(isEnabled);
+        mButton.setEnabled(isEnabled);
     }
 
     public void handleLoadingStatus(boolean isLoading) {
         if (isLoading) {
-            button.setText("");
-            loader.setVisibility(VISIBLE);
+            mButton.setText("");
+            mLoader.setVisibility(VISIBLE);
         } else {
-            button.setText(buttonText);
-            loader.setVisibility(GONE);
+            mButton.setText(mButtonText);
+            mLoader.setVisibility(GONE);
         }
     }
 

@@ -32,7 +32,7 @@ import java.util.Objects;
 
 public class FirebaseManager{
     public static String EMPTY_USER_NAME = "משתמש";
-    private Logger logger = new Logger(this.getClass().getSimpleName());
+    private Logger mLogger = new Logger(this.getClass().getSimpleName());
 
     private static FirebaseManager _instance;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -41,7 +41,7 @@ public class FirebaseManager{
     private CollectionReference mCommentsCollectionRef = mDb.collection("comments");
     private MutableLiveData<Boolean> mAuthStateLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mSignedInLiveData = new SingleLiveEvent<>();
-    private ListenerRegistration listenerRegistration;
+    private ListenerRegistration mListenerRegistration;
 
     private FirebaseManager() {
         mAuth.addAuthStateListener(firebaseAuth -> mAuthStateLiveData.postValue(isUserLoggedIn()));
@@ -78,7 +78,7 @@ public class FirebaseManager{
 
     public void updateUserDetails(String userName) {
         if (mAuth.getCurrentUser() != null) {
-            logger.logDebug("updateProfile");
+            mLogger.logDebug("updateProfile");
             UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(userName).build();
             mAuth.getCurrentUser().updateProfile(userProfileChangeRequest);
         }
@@ -87,10 +87,10 @@ public class FirebaseManager{
     public void registerUser(String email, String password, String userName) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((authResult) -> {
             if (authResult.isSuccessful()) {
-                logger.logDebug("registerUser:success");
+                mLogger.logDebug("registerUser:success");
                 updateUserDetails(userName);
             } else {
-                logger.logDebug("registerUser:failure");
+                mLogger.logDebug("registerUser:failure");
             }
             mSignedInLiveData.postValue(authResult.isSuccessful());
         });
@@ -100,10 +100,10 @@ public class FirebaseManager{
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((authResult) -> {
             if (authResult.isSuccessful()) {
                 // Sign in success, update UI with the signed-in user's information
-                logger.logDebug("signInWithEmail:success");
+                mLogger.logDebug("signInWithEmail:success");
             } else {
                 // If sign in fails, display a message to the user.
-                logger.logWarning("signInWithEmail:failure", authResult.getException());
+                mLogger.logWarning("signInWithEmail:failure", authResult.getException());
             }
             mSignedInLiveData.postValue(authResult.isSuccessful());
         });
@@ -125,7 +125,7 @@ public class FirebaseManager{
     public void getCommentsForProperty(int propertyId, IFirebaseListener listener) {
         mCommentsCollectionRef.whereEqualTo("propertyId", propertyId).addSnapshotListener((snapshot, e) -> {
             if (e != null) {
-                logger.logWarning("getCommentsForProperty failed.", e);
+                mLogger.logWarning("getCommentsForProperty failed.", e);
                 return;
             }
             List<Comment> comments = new ArrayList<>();
@@ -163,18 +163,18 @@ public class FirebaseManager{
     }
 
     public void updatePropertyListener(long from, IFirebaseListener listener) {
-        listenerRegistration.remove();
+        mListenerRegistration.remove();
         getAllProperties(DateTimeUtils.getTimestampFromLong(from), listener);
     }
 
     private void getAllProperties(Timestamp from, IFirebaseListener listener) {
-        listenerRegistration = mPropertiesCollectionRef.whereGreaterThan("lastUpdate", from).addSnapshotListener((snapshot, e) -> {
+        mListenerRegistration = mPropertiesCollectionRef.whereGreaterThan("lastUpdate", from).addSnapshotListener((snapshot, e) -> {
             if (e != null) {
-                logger.logWarning("Listen failed.", e);
+                mLogger.logWarning("Listen failed.", e);
                 return;
             }
             if (snapshot != null && !snapshot.isEmpty()) {
-                logger.logDebug("Current properties snapshot.getDocumentChanges() number: " + snapshot.getDocumentChanges().size());
+                mLogger.logDebug("Current properties snapshot.getDocumentChanges() number: " + snapshot.getDocumentChanges().size());
                 List<Property> properties = new ArrayList<>();
                 snapshot.getDocumentChanges().get(0).getDocument().toObject(Property.class);
                 for (DocumentChange docChange : snapshot.getDocumentChanges()) {
@@ -187,7 +187,7 @@ public class FirebaseManager{
                 }
 
                 listener.updatedProperties(properties);
-                logger.logDebug("Current properties number: " + properties.size());
+                mLogger.logDebug("Current properties number: " + properties.size());
             }
         });
     }

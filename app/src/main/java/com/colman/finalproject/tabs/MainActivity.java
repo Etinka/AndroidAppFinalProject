@@ -2,10 +2,11 @@ package com.colman.finalproject.tabs;
 
 import android.os.Bundle;
 
-import com.colman.finalproject.R;
-import com.colman.finalproject.bases.GagBaseActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends GagBaseActivity {
+import com.colman.finalproject.R;
+
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

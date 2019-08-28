@@ -30,15 +30,7 @@ public class PropertyDetailsFragment extends GagBaseFragment {
     private View mRootView;
     private ViewPager mImagePager;
     private TabLayout mDotsIndicator;
-    private TextView mPrice;
-    private TextView mAddress;
-    private TextView mType;
-    private TextView mNumRooms;
-    private TextView mBalcony;
-    private TextView mSize;
-    private TextView mFloor;
-    private TextView mElevator;
-    private TextView mSafeRoom;
+    private TextView mPrice, mAddress, mType, mNumRooms, mBalcony, mSize, mFloor, mElevator, mSafeRoom;
     private CommentsAdapter mCommentsAdapter;
     private int mPropertyId;
 
@@ -86,7 +78,7 @@ public class PropertyDetailsFragment extends GagBaseFragment {
 
         commentsRecyclerView.setHasFixedSize(true);
         ((LinearLayoutManager) Objects.requireNonNull(commentsRecyclerView.getLayoutManager())).setOrientation(RecyclerView.VERTICAL);
-        mCommentsAdapter = new CommentsAdapter(getContext());
+        mCommentsAdapter = new CommentsAdapter();
         commentsRecyclerView.setAdapter(mCommentsAdapter);
 
         addCommentButton.setOnClickListener(view -> {
@@ -113,10 +105,7 @@ public class PropertyDetailsFragment extends GagBaseFragment {
         mSafeRoom.setText(getString(R.string.safe_room, property.isSafeRoom() ?
                 getString(R.string.available) : getString(R.string.unavailable)));
 
-        mImagePager.setAdapter(new PropertyImagesAdapter(
-                getContext(),
-                property.getImages())
-        );
+        mImagePager.setAdapter(new PropertyImagesAdapter(property.getImages()));
 
         mDotsIndicator.setupWithViewPager(mImagePager);
         mCommentsAdapter.updateComments(property.getComments());

@@ -4,8 +4,8 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.colman.finalproject.bases.GagBaseViewModel;
 import com.colman.finalproject.models.Property;
@@ -22,12 +22,12 @@ public class PropertiesListViewModel extends GagBaseViewModel {
         super(application);
     }
 
-    public void observePropertiesList(LifecycleOwner lifecycleOwner, Observer<List<Property>> observer) {
-        mPropertiesLiveData.observe(lifecycleOwner, observer);
+    public LiveData<List<Property>> getProperties() {
+        return mPropertiesLiveData;
     }
 
-    public void observeSelectedPropertyLiveData(LifecycleOwner lifecycleOwner, Observer<Integer> observer) {
-        mSelectedPropertyLiveData.observe(lifecycleOwner, observer);
+    public LiveData<Integer> getSelectedProperty() {
+        return mSelectedPropertyLiveData;
     }
 
     public void clickedOnItem(int itemId) {

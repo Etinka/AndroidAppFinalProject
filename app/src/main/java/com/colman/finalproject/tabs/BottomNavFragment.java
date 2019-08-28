@@ -13,16 +13,18 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseFragment;
+import com.colman.finalproject.model.Model;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BottomNavFragment extends GagBaseFragment {
-    private BottomNavigationView bottomNavigation;
+    private BottomNavigationView mBottomNavigation;
+    private Model mModel = Model.getInstance();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bottom_nav, container, false);
-        bottomNavigation = view.findViewById(R.id.bottomNavigation);
+        mBottomNavigation = view.findViewById(R.id.bottomNavigation);
         return view;
     }
 
@@ -30,7 +32,7 @@ public class BottomNavFragment extends GagBaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         NavController navController = Navigation.findNavController(requireActivity(), R.id.bottomNavFragment);
-        NavigationUI.setupWithNavController(bottomNavigation, navController);
+        NavigationUI.setupWithNavController(mBottomNavigation, navController);
 
         mModel.observeAuthStateLiveData(getViewLifecycleOwner(), isLoggedIn -> {
             if (!isLoggedIn) {

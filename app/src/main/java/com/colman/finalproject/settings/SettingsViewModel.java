@@ -4,9 +4,8 @@ import android.app.Application;
 import android.text.Editable;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.colman.finalproject.R;
 import com.colman.finalproject.bases.GagBaseViewModel;
@@ -26,20 +25,20 @@ public class SettingsViewModel extends GagBaseViewModel {
         mInfoLiveData.postValue(mUserInfo);
     }
 
-    void observeInfoLiveData(LifecycleOwner lifecycleOwner, Observer<UserInfo> observer) {
-        mInfoLiveData.observe(lifecycleOwner, observer);
+    LiveData<UserInfo> getUserInfo() {
+        return mInfoLiveData;
     }
 
-    void observeLoadingLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer) {
-        mLoadingLiveData.observe(lifecycleOwner, observer);
+    LiveData<Boolean> getLoading() {
+        return mLoadingLiveData;
     }
 
-    void observeEnableButtonLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer) {
-        mEnableButtonLiveData.observe(lifecycleOwner, observer);
+    LiveData<Boolean> getButtonState() {
+        return mEnableButtonLiveData;
     }
 
-    void observeSnackbarLiveData(LifecycleOwner lifecycleOwner, Observer<String> observer) {
-        mShowSnackbarLiveData.observe(lifecycleOwner, observer);
+    LiveData<String> getShowSnackbar() {
+        return mShowSnackbarLiveData;
     }
 
     void updateUserDetails(String userName) {

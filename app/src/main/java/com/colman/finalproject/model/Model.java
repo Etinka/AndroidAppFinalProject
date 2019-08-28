@@ -22,13 +22,13 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 public class Model {
-    private Logger logger = new Logger(this.getClass().getSimpleName());
+    private Logger mLogger = new Logger(this.getClass().getSimpleName());
     private static String LAST_UPDATED_KEY = "lastUpdatedTimestamp";
 
     private static Model _instance;
     private FirebaseManager mFirebaseManager = FirebaseManager.getInstance();
     private PropertyRepository mRepository;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     private Model() {
     }
@@ -42,14 +42,14 @@ public class Model {
 
     public void init(Application application) {
         mRepository = new PropertyRepository(application);
-        sharedPreferences = application.getSharedPreferences("RepositoryPrefs", Context.MODE_PRIVATE);
+        mSharedPreferences = application.getSharedPreferences("RepositoryPrefs", Context.MODE_PRIVATE);
         mFirebaseManager.getAllProperties(getLastUpdatedTimestamp(), firebaseListener);
     }
 
     private IFirebaseListener firebaseListener = new IFirebaseListener() {
         @Override
         public void updatedProperties(List<Property> properties) {
-            logger.logDebug("Received update from Firebase");
+            mLogger.logDebug("Received update from Firebase");
             long timestamp = getLastUpdatedTimestamp();
 
             long lastUpdated = timestamp;
@@ -80,11 +80,11 @@ public class Model {
     };
 
     private long getLastUpdatedTimestamp() {
-        return sharedPreferences.getLong(LAST_UPDATED_KEY, -1);
+        return mSharedPreferences.getLong(LAST_UPDATED_KEY, -1);
     }
 
     private void setLastUpdatedTimestamp(long lastUpdated) {
-        sharedPreferences.edit().putLong(LAST_UPDATED_KEY, lastUpdated).apply();
+        mSharedPreferences.edit().putLong(LAST_UPDATED_KEY, lastUpdated).apply();
     }
 
     public boolean isUserLoggedIn() {

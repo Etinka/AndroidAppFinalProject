@@ -19,15 +19,13 @@ import java.util.List;
 
 public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.PropertyViewHolder> {
 
-    private LayoutInflater inflater;
-    private Context context;
-    private List<Property> properties;
+    private Context mContext;
+    private List<Property> mProperties;
     private OnItemClickListener mListener;
 
     PropertiesAdapter(Context context, List<Property> properties) {
-        this.inflater = LayoutInflater.from(context);
-        this.properties = properties;
-        this.context = context;
+        this.mProperties = properties;
+        this.mContext = context;
     }
 
     void setOnItemClickListener(OnItemClickListener listener) {
@@ -38,27 +36,27 @@ public class PropertiesAdapter extends RecyclerView.Adapter<PropertiesAdapter.Pr
     @NonNull
     @Override
     public PropertyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = inflater.inflate(R.layout.property_item_layout, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.property_item_layout, viewGroup, false);
         return new PropertyViewHolder(view, mListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PropertyViewHolder propertyViewHolder, int i) {
-        propertyViewHolder.numOfRooms.setText(context.getString(R.string.num_rooms, properties.get(i).getNumberOfRooms()));
-        propertyViewHolder.floor.setText(context.getString(R.string.floor, properties.get(i).getFloor()));
-        propertyViewHolder.price.setText(Html.fromHtml(context.getString(R.string.price, properties.get(i).getPrice())));
-        propertyViewHolder.propertyType.setText(properties.get(i).getHouseType());
-        propertyViewHolder.address.setText(properties.get(i).getAddress());
+        propertyViewHolder.numOfRooms.setText(mContext.getString(R.string.num_rooms, mProperties.get(i).getNumberOfRooms()));
+        propertyViewHolder.floor.setText(mContext.getString(R.string.floor, mProperties.get(i).getFloor()));
+        propertyViewHolder.price.setText(Html.fromHtml(mContext.getString(R.string.price, mProperties.get(i).getPrice())));
+        propertyViewHolder.propertyType.setText(mProperties.get(i).getHouseType());
+        propertyViewHolder.address.setText(mProperties.get(i).getAddress());
 
         Picasso.get()
-                .load(properties.get(i).getImageUrl())
+                .load(mProperties.get(i).getImageUrl())
                 .placeholder(R.drawable.img_placeholder)
                 .into(propertyViewHolder.propertyImage);
     }
 
     @Override
     public int getItemCount() {
-        return properties.size();
+        return mProperties.size();
     }
 
     interface OnItemClickListener {

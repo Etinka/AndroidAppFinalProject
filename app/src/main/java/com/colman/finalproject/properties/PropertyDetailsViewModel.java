@@ -85,7 +85,7 @@ public class PropertyDetailsViewModel extends GagBaseViewModel {
         }
     }
 
-    MutableLiveData<Property> getPropertyLiveData() {
+    LiveData<Property> getPropertyLiveData() {
         return mPropertyLiveData;
     }
 

@@ -1,6 +1,5 @@
 package com.colman.finalproject.comments;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -25,30 +24,28 @@ import java.util.List;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.CommentViewHolder> {
 
-    private LayoutInflater inflater;
-    private List<Comment> comments = new ArrayList<>();
-    private String userId;
+    private List<Comment> mComments = new ArrayList<>();
+    private String mUserId;
 
-    public CommentsAdapter(Context context) {
-        this.inflater = LayoutInflater.from(context);
-        userId = FirebaseManager.getInstance().getUserUid();
+    public CommentsAdapter() {
+        mUserId = FirebaseManager.getInstance().getUserUid();
     }
 
     public void updateComments(List<Comment> comments) {
-        this.comments = comments;
+        this.mComments = comments;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = inflater.inflate(R.layout.comment_item_layout, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.comment_item_layout, viewGroup, false);
         return new CommentViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder commentViewHolder, int position) {
-        Comment comment = comments.get(position);
+        Comment comment = mComments.get(position);
         commentViewHolder.writerName.setText(comment.getUserName());
         commentViewHolder.commentDate.setText(DateUtils.getRelativeTimeSpanString(comment.getDate().toDate().getTime()));
         commentViewHolder.commentContent.setText(comment.getText());
@@ -62,7 +59,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         }
         commentViewHolder.commentImage.setVisibility(hasImage ? View.VISIBLE : View.GONE);
 
-        if (comment.getUserUid().equals(userId)) {
+        if (comment.getUserUid().equals(mUserId)) {
             commentViewHolder.editButton.setVisibility(View.VISIBLE);
             commentViewHolder.editButton.setOnClickListener(view -> {
                 PropertyDetailsFragmentDirections.ActionPropertyDetailsFragmentToAddCommentFragment direction =
@@ -79,7 +76,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
     @Override
     public int getItemCount() {
-        return comments.size();
+        return mComments.size();
     }
 
     class CommentViewHolder extends RecyclerView.ViewHolder {

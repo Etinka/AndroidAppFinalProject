@@ -1,7 +1,6 @@
 package com.colman.finalproject.properties;
 
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,25 +17,23 @@ import java.util.List;
 
 public class PropertyImagesAdapter extends PagerAdapter {
 
-    private List<String> propertyImages;
-    private LayoutInflater inflater;
+    private List<String> mPropertyImages;
 
-    PropertyImagesAdapter(Context context, List<String> propertyImages) {
-        this.propertyImages = new ArrayList<>(propertyImages)   ;
-        this.inflater = LayoutInflater.from(context);
+    PropertyImagesAdapter(List<String> propertyImages) {
+        this.mPropertyImages = new ArrayList<>(propertyImages)   ;
     }
 
     @Override
     public int getCount() {
-        return propertyImages.size();
+        return mPropertyImages.size();
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View itemView = inflater.inflate(R.layout.property_image, container, false);
+        View itemView = LayoutInflater.from(container.getContext()).inflate(R.layout.property_image, container, false);
         AppCompatImageView image = itemView.findViewById(R.id.image);
-        String imageUrl = propertyImages.get(position);
+        String imageUrl = mPropertyImages.get(position);
 
         Picasso.get().load(imageUrl).placeholder(R.drawable.img_placeholder).into(image);
 

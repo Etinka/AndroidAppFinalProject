@@ -43,11 +43,11 @@ public class AddEditCommentFragment extends GagBaseFragment {
     private TextView mAddress;
     private AppCompatEditText mCommentContent;
     private AppCompatImageView mAddImageButton;
-    private LoaderButton mAddCommentButton;
-    private LoaderButton mDeleteCommentButton;
+    private LoaderButton mAddCommentButton, mDeleteCommentButton;
+
     // Data
     private PropertyDetailsViewModel mViewModel;
-    private Bitmap bitmap;
+    private Bitmap mSelectedBitmap;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class AddEditCommentFragment extends GagBaseFragment {
         mAddCommentButton.setOnClickListener(button -> {
             hideSoftKeyBoard();
             mViewModel.clickedAddComment(
-                    mCommentContent.getText() != null ? mCommentContent.getText().toString() : "", bitmap);
+                    mCommentContent.getText() != null ? mCommentContent.getText().toString() : "", mSelectedBitmap);
             mAddCommentButton.handleLoadingStatus(true);
         });
 
@@ -152,8 +152,8 @@ public class AddEditCommentFragment extends GagBaseFragment {
                 String picturePath = cursor.getString(columnIndex);
                 cursor.close();
 
-                bitmap = BitmapFactory.decodeFile(picturePath);
-                mAddImageButton.setImageBitmap(bitmap);
+                mSelectedBitmap = BitmapFactory.decodeFile(picturePath);
+                mAddImageButton.setImageBitmap(mSelectedBitmap);
             }
         }
     }

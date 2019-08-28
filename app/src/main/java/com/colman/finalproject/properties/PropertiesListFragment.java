@@ -44,7 +44,7 @@ public class PropertiesListFragment extends GagBaseFragment {
         super.onViewCreated(view, savedInstanceState);
         PropertiesListViewModel viewModel = ViewModelProviders.of(this).get(PropertiesListViewModel.class);
 
-        viewModel.observePropertiesList(getViewLifecycleOwner(), properties -> {
+        viewModel.getProperties().observe(getViewLifecycleOwner(), properties -> {
             if (properties != null) {
                 this.mProperties.clear();
                 this.mProperties.addAll(properties);
@@ -58,7 +58,7 @@ public class PropertiesListFragment extends GagBaseFragment {
             }
         });
 
-        viewModel.observeSelectedPropertyLiveData(getViewLifecycleOwner(), selectedItemId -> {
+        viewModel.getSelectedProperty().observe(getViewLifecycleOwner(), selectedItemId -> {
             PropertiesListFragmentDirections.ActionNavigationHomeToPropertyDetailsFragment directions =
                     PropertiesListFragmentDirections.actionNavigationHomeToPropertyDetailsFragment().setPropertyId(selectedItemId);
             Navigation.findNavController(Objects.requireNonNull(getView())).navigate(directions);

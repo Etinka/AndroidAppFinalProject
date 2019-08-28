@@ -3,7 +3,6 @@ package com.colman.finalproject.map;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,7 @@ public class MapFragment extends GagBaseFragment
     private GoogleMap mGoogleMap = null;
     private boolean mLocationPermissionGranted;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private LocationCallback locationCallback;
+    private LocationCallback mLocationCallback;
 
     public MapFragment() {
     }
@@ -76,7 +75,7 @@ public class MapFragment extends GagBaseFragment
     private void initLocation() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
-        locationCallback = new LocationCallback() {
+        mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
@@ -92,10 +91,10 @@ public class MapFragment extends GagBaseFragment
     }
 
     private void registerObservers() {
-        mViewModel.observePropertiesList(getViewLifecycleOwner(), properties -> {
+        mViewModel.getProperties().observe(getViewLifecycleOwner(), properties -> {
             if (properties != null && mGoogleMap != null) {
                 for (Property property : properties) {
-                    logger.logDebug("onMapReady: " + property.getLatitude() + " " + property.getLongitude());
+                    mLogger.logDebug("onMapReady: " + property.getLatitude() + " " + property.getLongitude());
                     Marker marker = mGoogleMap.addMarker(
                             new MarkerOptions()
                                     .position(new LatLng(property.getLatitude(), property.getLongitude()))
@@ -106,7 +105,7 @@ public class MapFragment extends GagBaseFragment
             }
         });
 
-        mViewModel.observeSelectedPropertyLiveData(getViewLifecycleOwner(), selectedItemId -> {
+        mViewModel.getSelectedProperty().observe(getViewLifecycleOwner(), selectedItemId -> {
             MapFragmentDirections.ActionNavigationMapToPropertyDetailsFragment directions =
                     MapFragmentDirections.actionNavigationMapToPropertyDetailsFragment().setPropertyId(selectedItemId);
             Navigation.findNavController(Objects.requireNonNull(getView())).navigate(directions);
@@ -147,7 +146,7 @@ public class MapFragment extends GagBaseFragment
                 mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
             }
         } catch (SecurityException e) {
-            Log.e("Exception: %s", e.getMessage());
+            mLogger.logError(e.getMessage());
         }
     }
 
@@ -190,12 +189,12 @@ public class MapFragment extends GagBaseFragment
 
     private void startLocationUpdates() {
         mFusedLocationProviderClient.requestLocationUpdates(createLocationRequest(),
-                locationCallback,
+                mLocationCallback,
                 null /* Looper */);
     }
 
     private void stopLocationUpdates() {
-        mFusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
     }
 
     @Override

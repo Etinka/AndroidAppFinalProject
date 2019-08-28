@@ -4,9 +4,8 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.colman.finalproject.model.Model;
 import com.colman.finalproject.utils.SingleLiveEvent;
@@ -19,7 +18,7 @@ public class GagBaseViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void observeLoggedInLiveData(LifecycleOwner lifecycleOwner, Observer<Boolean> observer) {
-        mIsLoggedIn.observe(lifecycleOwner, observer);
+    public LiveData<Boolean> getIsLoggedIn() {
+        return mIsLoggedIn;
     }
 }
